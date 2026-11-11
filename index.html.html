@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EcoTrack — Protótipo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f5f8fc;--card:#fff;--tx:#0f1c3a;--mut:#5b6785;--bd:#e5eaf3;--pri:#1565ff;--ok:#16a34a;--okbg:#e4f6ea;--lite:#e8f0ff;--sh:0 1px 4px rgba(16,40,90,.08);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c30;--tx:#e8eefc;--mut:#93a0bb;--bd:#24304a;--lite:#17274a;--okbg:#12301f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#131c30;--tx:#e8eefc;--mut:#93a0bb;--bd:#24304a;--lite:#17274a;--okbg:#12301f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);display:flex;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#0b1f46;z-index:10}
+nav{width:250px;flex:none;background:linear-gradient(180deg,#0c2250,#081634);color:#fff;padding:20px 14px;position:sticky;top:env(safe-area-inset-top,0px);height:calc(100vh - env(safe-area-inset-top,0px));display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;margin:0 6px 26px}.logo svg{color:#22c55e}
+nav a{display:flex;align-items:center;gap:14px;color:#cdd7ee;text-decoration:none;padding:12px 14px;border-radius:10px;margin-bottom:6px;font-size:15px}
+nav a.on{background:var(--pri);color:#fff}
+.emp{margin-top:auto;border-top:1px solid rgba(255,255,255,.12);padding:14px 6px 4px;display:flex;gap:10px;align-items:center;font-size:12px;color:#9fb0d0}.emp>div{flex:1}.emp b{display:block;color:#fff;font-size:14px;font-weight:500}
+main{flex:1;min-width:0;padding:26px 30px}
+.top{display:flex;justify-content:space-between;gap:12px;margin-bottom:18px}
+h1{margin:0;font-size:30px;line-height:1.15}.bl{color:var(--pri)}.sub{margin:6px 0 0;color:var(--mut);font-size:16px}
+.tr{display:flex;gap:14px;align-items:center}.bell{position:relative}.bell::after{content:"";position:absolute;top:-1px;right:0;width:8px;height:8px;border-radius:50%;background:var(--pri)}
+.av{width:46px;height:46px;border-radius:50%;background:var(--bd);display:grid;place-items:center;color:var(--mut)}
+.flt{display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-bottom:16px}.flt label{display:flex;align-items:center;gap:10px;font-weight:500}
+.sel{padding:11px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit;min-width:170px;box-shadow:var(--sh)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;box-shadow:var(--sh)}
+.g3,.g4,.g21,.g11,.g32,.g4b{display:grid;gap:16px;margin-bottom:16px}
+.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g21{grid-template-columns:2fr 1fr}.g11{grid-template-columns:1fr 1fr}.g32{grid-template-columns:3fr 2fr}.g4b{grid-template-columns:repeat(4,1fr) auto;align-items:center}
+.col{display:flex;flex-direction:column;gap:16px}.col>.card{margin:0}
+.kp{display:flex;gap:14px;align-items:center}.kl{font-size:15px;font-weight:600}.kv{font-size:26px;font-weight:700;line-height:1.2}.sb{color:var(--mut);margin-top:4px}
+.dn{color:var(--ok);display:inline-flex;align-items:center;gap:2px}.dn b{font-weight:600}
+.ti{width:54px;height:54px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--lite);color:var(--pri)}
+.ti.g{background:var(--okbg);color:var(--ok)}.ti.p{background:#efe7ff;color:#7c3aed}.ti.r{background:#fde8e8;color:#dc2626}.ti.o{background:#fdf0d8;color:#d97706}
+.rw .ti{width:38px;height:38px}.rw .ti svg{width:20px;height:20px}
+.ct{display:flex;align-items:center;gap:10px;margin-bottom:12px}.ct h3{margin:0;font-size:17px;font-weight:600;flex:1}
+.ch{position:relative;height:230px}
+.dl{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center}
+.dw{position:relative;width:170px;height:170px;flex:none}.dw .ch{height:170px}
+.dc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}.dc b{font-size:19px}
+.lg div{display:flex;align-items:center;gap:10px;margin:10px 0}.lg i{width:12px;height:12px;border-radius:3px}
+.rw{display:flex;align-items:center;gap:12px;padding:11px 6px;border-top:1px solid var(--bd);color:inherit;text-decoration:none;cursor:pointer;border-radius:8px}
+.ct+.rw{border-top:0}.rw>div:nth-child(2){flex:1}.rw small{display:block;color:var(--mut)}.rw.on{background:var(--lite)}
+.pill{background:var(--okbg);color:var(--ok);padding:4px 12px;border-radius:99px;font-size:13px;white-space:nowrap}
+.ok{color:var(--ok)}.bad{color:#dc2626}.gb{background:var(--okbg);border-color:transparent}
+.tag{padding:2px 10px;border-radius:99px;font-size:12px;background:#fdf0d8;color:#92400e;white-space:nowrap}.tag.a{background:#fde2e2;color:#991b1b}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--card);box-shadow:var(--sh);margin-bottom:16px}
+.ct .seg,.card .seg.s{margin:0}
+.seg button{border:0;background:none;color:var(--tx);padding:10px 18px;font:inherit;cursor:pointer;display:flex;align-items:center;gap:8px}.seg .on{background:var(--pri);color:#fff}
+.bd{background:#fff;color:var(--pri);border-radius:99px;padding:0 8px;font-size:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:11px 18px;font:inherit;font-weight:600;cursor:pointer}.btn.p{background:var(--pri);border-color:var(--pri);color:#fff}
+.rt{cursor:pointer}.rt.sel{outline:2px solid var(--pri)}
+.ind{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ind>div{background:var(--okbg);border-radius:12px;padding:12px}.ind b{display:block;font-size:22px}
+.ck{width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;flex:none}
+.acc{display:flex;gap:24px;flex-wrap:wrap}.acc .flds{flex:1;min-width:220px}.ctr{text-align:center}.ctr .av{width:78px;height:78px;margin:0 auto 8px}
+.fl{display:flex;align-items:center;gap:12px;margin:10px 0}.fl>span{width:60px;color:var(--mut)}.fl .sel{flex:1;min-width:0}
+.pr{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--bd)}.pr>div{flex:1}.pr small{display:block;color:var(--mut)}
+.sw input{display:none}.sw i{width:46px;height:26px;border-radius:99px;background:#cbd5e1;position:relative;display:block;cursor:pointer}
+.sw i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}
+.sw input:checked+i{background:var(--pri)}.sw input:checked+i::after{left:23px}
+table{width:100%;border-collapse:collapse}td{padding:8px;border-bottom:1px solid var(--bd)}
+.ft{color:var(--mut);font-size:12px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0b1f46;color:#fff;padding:10px 16px;border-radius:8px;display:none;z-index:20}
+@media(max-width:900px){body{flex-direction:column}nav{width:auto;height:auto;flex-direction:row;overflow-x:auto;padding:8px;z-index:5}.logo,.emp{display:none}nav a{white-space:nowrap;margin:0}main{padding:16px}.g3,.g21,.g11,.g32{grid-template-columns:1fr}.g4,.g4b{grid-template-columns:1fr 1fr}.g4b .btn{grid-column:1/-1;justify-content:center}h1{font-size:24px}.ind{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),cs=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),fm=n=>String(n).replace(".",",");
+const P={home:"M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10",bars:"M5 20V11M10 20V4M15 20v-9M20 20V8",wifi:"M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0M12 19.5h.01",file:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6",leaf:"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10zM2 21c0-3 1.9-5.5 6-7",gear:"M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1",bolt:"M13 2L4 14h7l-1 8 9-12h-7z",drop:"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",rec:"M4 12a8 8 0 0 1 13-6l2 2M20 4v5h-5M20 12a8 8 0 0 1-13 6l-2-2M4 20v-5h5",bell:"M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4",user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0",bld:"M4 21V5l8-2v18M12 9h8v12M7 9h2M7 13h2M7 17h2M15 13h2M15 17h2",ch:"M9 6l6 6-6 6",dn:"M12 4v16M6 14l6 6 6-6",lay:"M12 3l9 5-9 5-9-5zM3 13l9 5 9-5",coin:"M12 4c4 0 7 1 7 2.5S16 9 12 9 5 8 5 6.5 8 4 12 4zM5 6.5v5C5 13 8 14 12 14s7-1 7-2.5v-5M5 11.5v5C5 18 8 19 12 19s7-1 7-2.5v-5",cloud:"M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z",sun:"M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5",bulb:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3",temp:"M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0",plus:"M12 5v14M5 12h14",dl:"M12 4v12M7 11l5 5 5-5M5 20h14",more:"M12 5h.01M12 12h.01M12 19h.01",tr:"M3 17l6-6 4 4 8-8",chk:"M5 12l5 5 9-10",srch:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M21 21l-5-5",db:"M4 6c0-1.5 3.6-3 8-3s8 1.5 8 3-3.6 3-8 3-8-1.5-8-3zM4 6v12c0 1.5 3.6 3 8 3s8-1.5 8-3V6M4 12c0 1.5 3.6 3 8 3s8-1.5 8-3",tgt:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8",pen:"M4 20l1-4L16 5l3 3L8 19z",cam:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6",mail:"M3 6h18v12H3zM3 7l9 7 9-7",warn:"M12 3l10 18H2zM12 10v5M12 18h.01",cal:"M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"};
+const MES=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+const E=[22.6,23.1,25.0,23.2,22.8,23.9,25.6,26.8,24.4,22.9,23.0,24.1];
+const IDX={e:[83,85,91,86,84,87,93,94,90,87,89,94],a:[74,76,80,77,74,76,79,82,79,77,78,82],m:[67,69,71,70,68,69,71,72,71,70,70,73]};
+const RES={
+ energia:{n:"Energia",u:"GWh",k:1,tot:"287,4 GWh",med:"23,9 GWh",dv:"5,2%",eco:"15,8 GWh",c:"#1565ff",ic:"bolt"},
+ agua:{n:"Água",u:"mil m³",k:160/23.9,tot:"1,92 milhões m³",med:"160 mil m³",dv:"3,8%",eco:"76 mil m³",c:"#16a34a",ic:"drop"},
+ mat:{n:"Materiais",u:"mil t",k:1.05/23.9,tot:"12,6 mil t",med:"1,05 mil t",dv:"7,1%",eco:"0,96 mil t",c:"#7c3aed",ic:"rec"}};
+let DEV=[
+ {n:"Medidor de Energia – Datacenter",s:"Setor TI",id:"IOT-001",on:1,i:"bolt",cc:"b",u:"kWh",cur:26.4,mes:"1.842 kWh",dv:"5,2%",k:1,t:"Energia · Setor TI"},
+ {n:"Medidor de Água – Prédio Principal",s:"Infraestrutura",id:"IOT-002",on:1,i:"drop",cc:"b",u:"m³",cur:4.2,mes:"3.120 m³",dv:"3,8%",k:.16,t:"Água · Infraestrutura"},
+ {n:"Sensor de Resíduos",s:"Operações",id:"IOT-003",on:1,i:"rec",cc:"g",u:"kg",cur:38,mes:"12.400 kg",dv:"7,1%",k:1.44,t:"Materiais · Operações"},
+ {n:"Sensor de Ambiente",s:"Datacenter",id:"IOT-004",on:0,i:"temp",cc:"r",u:"°C",cur:0,mes:"—",dv:"—",k:0,t:"Temperatura · Datacenter"}];
+let ch=[],post=null,tm=0,cur="energia",vw="g",sel=0,rg="h",dt="c",rtp=0,rt="s";
+const setCur=v=>{cur=v;render()},setVw=v=>{vw=v;render()},setRg=v=>{rg=v;render()},setDt=v=>{dt=v;render()},setRt=v=>{rt=v;render()};
+
+const ic=(n,s=22)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${P[n]}"/></svg>`;
+const ti=(n,k)=>`<div class="ti ${k}">${ic(n,26)}</div>`;
+const dnn=t=>`<span class="dn">${ic("dn",14)}<b>${t}</b></span>`;
+const kp=(n,k,l,v,s)=>`<div class="card kp">${ti(n,k)}<div><b class="kl">${l}</b><div class="kv">${v}</div>${s||""}</div></div>`;
+const head=(t,s)=>`<div class="top"><div><h1>${t}</h1><p class="sub">${s}</p></div><div class="tr"><span class="bell">${ic("bell",24)}</span><div class="av">${ic("user",24)}</div></div></div>`;
+const ct=(n,t,x)=>`<div class="ct">${ic(n,20)}<h3>${t}</h3>${x||""}</div>`;
+const cv=(id,h)=>`<div class="ch"${h?` style="height:${h}px"`:""}><canvas id="${id}"></canvas></div>`;
+const seg=(a,v,fn,s)=>`<div class="seg ${s||""}">${a.map(x=>`<button class="${x[0]==v?"on":""}" onclick="${fn}('${x[0]}')">${x[2]?ic(x[2],16):""}${x[1]}</button>`).join("")}</div>`;
+const rowl=(n,k,t,s,r,h)=>`<a class="rw" href="${h||"#"}">${ti(n,k)}<div><b>${t}</b><small>${s}</small></div>${r||""}${ic("ch",18)}</a>`;
+const leg=a=>a.map(x=>`<div><i style="background:${x[0]}"></i>${x[1]}</div>`).join("");
+const dw=(id,m)=>`<div class="dw">${cv(id,170)}<div class="dc">${m}</div></div>`;
+const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2200)};
+const mk=(id,cfg)=>ch.push(new Chart($("#"+id),cfg));
+const area=(id,lab,ds,u,mn,mx)=>mk(id,{type:"line",data:{labels:lab,datasets:ds.map(d=>({tension:.35,pointRadius:3.5,pointBackgroundColor:"#fff",pointBorderColor:d.borderColor,borderWidth:2,fill:ds.length==1,backgroundColor:d.borderColor+"26",...d}))},options:{maintainAspectRatio:false,plugins:{legend:{display:ds.length>1,position:"right"}},scales:{x:{grid:{display:false}},y:{min:mn,max:mx,ticks:{callback:v=>v+(u?" "+u:"")}}}}});
+const donut=(id,d)=>mk(id,{type:"doughnut",data:{datasets:[{data:d,backgroundColor:["#0a56e8","#7fb3ff","#b4bccb"],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:"66%",plugins:{tooltip:{enabled:false}}}});
+const LG=leg([["#0a56e8","Energia – 72%"],["#7fb3ff","Água – 20%"],["#b4bccb","Materiais – 8%"]]);
+
+function dashboard(){
+ post=()=>{area("c1",MES,[{label:"GWh",data:E,borderColor:"#1565ff"}],"GWh",20,30);donut("c2",[72,20,8])};
+ const sub=t=>`<div class="sb">${dnn(t)} em relação ao ano anterior</div>`;
+ return head(`Olá, bem-vindo ao <span class="bl">EcoTrack</span>!`,"Monitoramento inteligente de recursos para mais economia e sustentabilidade.")+
+ `<div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: <select class="sel"><option>Todos</option><option>Energia</option><option>Água</option><option>Materiais</option></select></label></div>
+ <div class="g3">${kp("bolt","","Consumo de Energia","287,4 GWh",sub("-5,2%"))}${kp("drop","","Consumo de Água","1,92 milhões m³",sub("-3,8%"))}${kp("rec","","Materiais (Resíduos)","12,6 mil toneladas",sub("-7,1%"))}</div>
+ <div class="g21"><div class="card">${ct("bars","Consumo Mensal de Energia")}${cv("c1")}</div>
+ <div class="card">${ct("lay","Distribuição do Consumo")}<div class="dl">${dw("c2","<small>Total</small><b>100%</b>")}<div class="lg">${LG}</div></div></div></div>
+ <div class="g32"><div class="card">${ct("leaf","Recomendações de Economia")}
+  ${rowl("bolt","","Otimizar o resfriamento de servidores","Pode reduzir em até 8% o consumo de energia.","","#recomendacoes")}
+  ${rowl("drop","g","Reuso de água em sistemas de climatização","Economia estimada de 5% no consumo de água.","","#recomendacoes")}
+  ${rowl("rec","g","Aprimorar a gestão de resíduos","Pode reduzir em até 10% o volume de materiais descartados.","","#recomendacoes")}</div>
+ <div class="card">${ct("wifi","Dispositivos IoT",`<span class="pill">● ${DEV.filter(x=>x.on).length} dispositivos conectados</span>`)}
+  ${DEV.filter(x=>x.on).slice(0,3).map(x=>`<a class="rw" href="#dispositivos">${ti(x.i,x.cc)}<div><b>${x.n.split(" – ")[0]}</b></div><span class="ok">● Online</span>${ic("ch",18)}</a>`).join("")}</div></div>`}
+
+function consumo(){
+ const all=cur=="todos",r=RES[all?"energia":cur],k=r.k,F=v=>fm((v*k).toFixed(1));
+ post=()=>{
+  if(vw=="g")area("c1",MES,all?[{label:"Energia",data:IDX.e,borderColor:"#1565ff"},{label:"Água",data:IDX.a,borderColor:"#16a34a"},{label:"Materiais",data:IDX.m,borderColor:"#7c3aed"}]:[{label:r.u,data:E.map(v=>+(v*k).toFixed(2)),borderColor:r.c}],all?"%":r.u,cur=="energia"?20:all?60:undefined,cur=="energia"?30:all?100:undefined);
+  donut("c2",[72,20,8]);
+  mk("c3",{type:"bar",data:{labels:["1º Trim","2º Trim","3º Trim","4º Trim"],datasets:[{label:"2023",data:[74.2,72.8,78.6,77.5].map(v=>+(v*k).toFixed(1)),backgroundColor:"#a9c8ff",borderRadius:4},{label:"2024",data:[70.1,68.9,74.5,73.9].map(v=>+(v*k).toFixed(1)),backgroundColor:r.c,borderRadius:4}]},options:{maintainAspectRatio:false,scales:{x:{grid:{display:false}}}}})};
+ const K=all?[kp("bolt","","Energia","287,4 GWh"),kp("drop","","Água","1,92 milhões m³"),kp("rec","g","Materiais","12,6 mil t"),kp("leaf","g","Economia Estimada","R$ 124.500/ano")]
+  :[kp(r.ic,"","Consumo Total",r.tot),kp("cal","","Média Mensal",r.med),kp("dn","g","Variação Anual",`<span class="dn">${ic("dn",22)}-${r.dv}</span> <small>vs. 2023</small>`),kp("leaf","g","Economia Estimada",`<span class="ok">${r.eco}</span>`)];
+ const body=vw=="g"?cv("c1"):`<div style="height:230px;overflow:auto"><table>${MES.map((m,i)=>`<tr><td>${m}</td><td>${all?`${IDX.e[i]}% · ${IDX.a[i]}% · ${IDX.m[i]}%`:F(E[i])+" "+r.u}</td></tr>`).join("")}</table></div>`;
+ return head("Consumo","Acompanhe em detalhes o consumo de recursos, com análises, comparativos e histórico mensal.")+
+ `<div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: ${seg([["energia","Energia","bolt"],["agua","Água","drop"],["mat","Materiais","rec"],["todos","Todos","lay"]],cur,"setCur","s")}</label></div>
+ <div class="g4">${K.join("")}</div>
+ <div class="g21"><div class="card">${ct("bolt",all?"Consumo Mensal (% do pico)":`Consumo Mensal de ${r.n}`,seg([["g","Gráfico","bars"],["t","Tabela","file"]],vw,"setVw","s"))}${body}</div>
+ <div class="card">${ct("lay","Distribuição por Recurso (Anual)")}<div class="dl">${dw("c2",`<small>Total</small><b>${all?"100%":r.tot}</b>`)}<div class="lg">${LG}</div></div></div></div>
+ <div class="g11"><div class="card">${ct("bars",`Comparativo de Consumo (${r.u})`)}${cv("c3")}</div>
+ <div class="card">${ct("leaf","Principais Insights")}${rowl("dn","g",`Redução de ${r.dv} no consumo anual`,"Em relação ao ano anterior.")}${rowl("bulb","o","Pico de consumo em agosto",`${F(26.8)} ${r.u}, 12% acima da média mensal.`)}${rowl("leaf","g","Oportunidade de economia","É possível reduzir mais 8% com ações de eficiência.")}</div></div>`}
+
+function dispositivos(){
+ const d=DEV[sel],on=DEV.filter(x=>x.on).length,B=[21,23,24.5,25.5,28,27,30.5,34,35,31,29,26.4];
+ const D={h:[["00h","02h","04h","06h","08h","10h","12h","14h","16h","18h","20h","22h"],B],"7":[["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],[24.1,25.3,26,24.8,25.9,22.7,21.8]],"30":[Array.from({length:30},(_,i)=>String(i+1)),Array.from({length:30},(_,i)=>+(24+3*Math.sin(i/4)+(i*7%5)*.3).toFixed(1))]}[rg];
+ post=()=>{
+  if(!d.on||dt!="c")return;
+  area("c1",D[0],[{label:d.u,data:D[1].map(v=>+(v*d.k).toFixed(2)),borderColor:"#1565ff"}],d.u);
+  if(rg=="h")tm=setInterval(()=>{const a=ch[0].data.datasets[0].data,i=a.length-1,n=+Math.max(d.k,a[i]+(Math.random()-.5)*3*d.k).toFixed(2);a[i]=n;ch[0].update("none");$("#atual").textContent=fm(n)+" "+d.u},2000)};
+ const tabs=seg([["c","Consumo","bars"],["i","Informações","file"],["h","Histórico","tr"],["g","Configurações","gear"]],dt,"setDt","s");
+ let det;
+ if(!d.on)det=`<p class="sub">Dispositivo offline. Verifique a conexão e a alimentação.</p>`;
+ else if(dt=="c")det=`<div class="g3" style="margin-top:14px">${kp("bolt","","Consumo Atual",`<span id="atual">${fm(d.cur)} ${d.u}</span>`)}${kp("cal","","Consumo no Mês",d.mes)}${kp("dn","g","Variação",`<span class="dn">${ic("dn",20)}-${d.dv}</span>`,`<div class="sb">vs. mês anterior</div>`)}</div>
+  <div class="ct">${ic("tr",20)}<h3>Consumo em Tempo Real</h3>${seg([["h","Hoje"],["7","7 dias"],["30","30 dias"]],rg,"setRg","s")}</div>${cv("c1")}<small>Leituras simuladas (não é hardware real).</small>`;
+ else if(dt=="i")det=`<div style="margin-top:14px">${[["ID",d.id],["Setor",d.s],["Tipo",d.t.split(" · ")[0]],["Conexão","Wi-Fi (simulada)"],["Unidade",d.u]].map(x=>`<div class="pr"><div>${x[0]}</div><b>${x[1]}</b></div>`).join("")}</div>`;
+ else det=`<p class="sub">Disponível na versão completa do sistema.</p>`;
+ return head("Dispositivos IoT","Gerencie os sensores e medidores conectados ao EcoTrack e acompanhe o consumo em tempo real.")+
+ `<div class="g4b">${kp("wifi","g","Dispositivos Conectados",on)}${kp("lay","","Dispositivos Totais",DEV.length)}${kp("chk","g","Operacionais",on)}${kp("warn","r","Com Falha",DEV.length-on)}<button class="btn p" onclick="addDev()">${ic("plus",18)} Adicionar Dispositivo</button></div>
+ <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("bld","Meus Dispositivos")}
+  ${DEV.map((x,i)=>`<div class="rw ${i==sel?"on":""}" onclick="sel=${i};dt='c';render()">${ti(x.i,x.cc)}<div><b>${x.n}</b><small>${x.t}</small></div><span class="${x.on?"ok":"bad"}">● ${x.on?"Online":"Offline"}</span></div>`).join("")}</div>
+ <div class="card"><div class="rw" style="border:0;cursor:default">${ti(d.i,d.cc)}<div><b style="font-size:18px">${d.n}</b><small>${d.s} | ID: ${d.id}</small></div><span class="pill ${d.on?"":"bad"}">● ${d.on?"Online":"Offline"}</span></div>${tabs}${det}</div></div>`}
+function addDev(){const n=DEV.length+1;DEV.push({n:"Novo medidor (simulado) "+n,s:"Setor TI",id:"IOT-00"+n,on:1,i:"bolt",cc:"b",u:"kWh",cur:18.5,mes:"1.210 kWh",dv:"2,1%",k:.7,t:"Energia · Setor TI"});sel=n-1;dt="c";toast("Dispositivo simulado adicionado");render()}
+
+function relatorios(){
+ post=()=>area("c1",MES,[{label:"Energia",data:IDX.e,borderColor:"#1565ff"},{label:"Água",data:IDX.a,borderColor:"#16a34a"},{label:"Materiais",data:IDX.m,borderColor:"#7c3aed"}],"%",60,100);
+ const T=[["bars","","Consumo Geral","Visão completa de todos os recursos"],["leaf","g","Sustentabilidade","Indicadores e impacto ambiental"],["lay","p","Comparativo","Análise entre períodos (mês, trimestre, ano)"],["file","","Economia","Redução de consumo e custo estimado"]];
+ const rw=(n,k,a,b,s)=>`<div class="rw" style="cursor:default">${ti(n,k)}<div><b>${a}</b></div><b>${b}</b>${dnn(s)}</div>`;
+ return head("Relatórios","Gere relatórios de consumo, análise de desempenho e economia, prontos para exportação.")+
+ `<div class="g4">${T.map((x,i)=>`<div class="card kp rt ${i==rtp?"sel":""}" onclick="rtp=${i};render()">${ti(x[0],x[1])}<div><b class="kl">${x[2]}</b><div class="sb">${x[3]}</div></div></div>`).join("")}</div>
+ <div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: <select class="sel" style="min-width:120px"><option>Todos</option></select></label><label>Setor: <select class="sel" style="min-width:120px"><option>Todos</option></select></label><button class="btn p" onclick="toast('Relatório “${T[rtp][2]}” gerado (simulação)')">${ic("dl",18)} Exportar Relatório</button></div>
+ <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("file","Resumo do Período")}${rw("bolt","","Energia","287,4 GWh","-5,2%")}${rw("drop","","Água","1,92 milhões m³","-3,8%")}${rw("rec","g","Materiais","12,6 mil t","-7,1%")}</div>
+ <div class="card">${ct("tr","Evolução do Consumo (Todos os Recursos)")}${cv("c1")}</div></div>
+ <div class="g11"><div class="card">${ct("leaf","Indicadores de Sustentabilidade")}<div class="ind"><div><small>Emissão Estimada de CO₂</small><b>24,8 mil t</b>${dnn("-6,4%")}</div><div><small>Economia de Água</small><b>76 mil m³</b>${dnn("-3,8%")}</div><div><small>Redução de Resíduos</small><b>960 t</b>${dnn("-7,1%")}</div></div></div>
+ <div class="card">${ct("bars","Principais Conclusões")}${["Redução de 5,2% no consumo total de energia.","Economia de 3,8% no uso de água.","Diminuição de 7,1% no volume de materiais descartados.","Tendência de queda de consumo para o próximo período."].map(t=>`<div class="rw" style="cursor:default"><span class="ck">${ic("chk",14)}</span><div>${t}</div></div>`).join("")}</div></div>`}
+
+function recomendacoes(){
+ post=()=>{if(rt=="s")mk("c1",{type:"doughnut",data:{datasets:[{data:[18.6,81.4],backgroundColor:["#16a34a",cs("--bd")],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:"68%",plugins:{tooltip:{enabled:false}}}})};
+ const S=[["bolt","","Otimizar o resfriamento dos servidores","Ajustar a temperatura e o fluxo de ar pode reduzir o consumo de energia em até 8%.",1,"-8,0%"],["drop","","Reuso de água em sistemas de climatização","Implementar reaproveitamento pode gerar economia de até 5% no consumo de água.",0,"-5,0%"],["rec","g","Gestão de materiais e resíduos","Melhorar a separação e o descarte pode reduzir o volume de resíduos em até 10%.",1,"-10,0%"],["bulb","o","Automatização da iluminação","Sensores de presença e controle inteligente podem reduzir o consumo de energia em até 6%.",0,"-6,0%"],["sun","g","Uso de fontes renováveis","Avaliar a instalação de energia solar para reduzir custos e emissões de CO₂.",1,"-12,0 t/ano"]];
+ let main,side="";
+ if(rt=="s"){
+  main=`<div class="card">${S.map(s=>`<div class="rw" style="cursor:default">${ti(s[0],s[1])}<div><b>${s[2]}</b><small>${s[3]}</small></div><div style="text-align:right"><span class="tag ${s[4]?"a":""}">${s[4]?"Alto":"Médio"} Impacto</span><br>${dnn(s[5].slice(1))}</div></div>`).join("")}</div>`;
+  side=`<div class="col"><div class="card">${ct("bars","Impacto das Recomendações")}<div class="dl">${dw("c1","<small>de economia total</small><b>18,6%</b>")}<div class="lg" style="min-width:150px">${[["bolt","Energia","-8,0%"],["drop","Água","-5,0%"],["rec","Materiais","-10,0%"]].map(x=>`<div style="justify-content:space-between">${ic(x[0],18)}<span style="flex:1">${x[1]}</span><b class="ok">${x[2]}</b></div>`).join("")}</div></div></div>
+  <div class="card gb">${ct("leaf","Resultado Esperado")}Com a aplicação das recomendações, a empresa pode reduzir 18,6% do consumo total, economizando R$ 124.500 por ano e evitando a emissão de 24,8 toneladas de CO₂.</div></div>`}
+ else main=`<div class="card"><p class="sub">Disponível na versão completa do sistema.</p></div>`;
+ return head("Recomendações","Sugestões personalizadas para reduzir o consumo, economizar recursos e aumentar a sustentabilidade.")+
+ `<div class="g4">${kp("leaf","g","Potencial de Economia","18,6%")}${kp("coin","","Economia Estimada","R$ 124.500/ano")}${kp("cloud","","Redução Estimada de CO₂","24,8 t/ano")}${kp("leaf","g","Nível de Sustentabilidade","A (87/100)")}</div>
+ ${seg([["s",`Sugestões <span class="bd">${S.length}</span>`,"bulb"],["m","Metas","tgt"],["p","Planos de Ação","bars"]],rt,"setRt")}
+ <div class="g32">${main}${side}</div>`}
+
+function configuracoes(){
+ const th=document.documentElement.dataset.theme||"",th2=v=>`document.documentElement.dataset.theme='${v}';render()`;
+ const sw=(n,t,s)=>`<div class="pr">${ic(n,22)}<div>${t}${s?`<small>${s}</small>`:""}</div><label class="sw"><input type="checkbox" checked><i></i></label></div>`;
+ const it=(n,t,r)=>`<div class="rw" style="cursor:default">${ti(n,"")}<div><b>${t}</b></div><span class="pill">${r}</span>${ic("ch",18)}</div>`;
+ return head("Configurações","Gerencie sua conta, empresa, dispositivos, alertas e preferências do sistema.")+
+ `<div class="seg"><button class="on">Geral</button>${["Empresa","Usuários","Alertas","Integrações"].map(t=>`<button onclick="toast('Disponível na versão completa')">${t}</button>`).join("")}</div>
+ <div class="g11" style="align-items:start"><div class="col">
+  <div class="card">${ct("user","Informações da Conta")}<div class="acc"><div class="ctr"><div class="av">${ic("user",40)}</div><b>Lucas Henrique</b><br><small>analista.ti@empresa.com</small><br><br><button class="btn" onclick="toast('Alterar foto (simulação)')">${ic("cam",16)} Alterar Foto</button></div>
+   <div class="flds"><div class="fl"><span>Nome</span><input class="sel" value="Lucas Henrique"></div><div class="fl"><span>E-mail</span><input class="sel" value="analista.ti@empresa.com"></div><div class="fl"><span>Cargo</span><select class="sel"><option>Analista de TI</option><option>Gestor</option></select></div></div></div></div>
+  <div class="card">${ct("gear","Preferências do Sistema")}
+   <div class="pr"><div><b>Tema</b><small>Escolha o modo de exibição do sistema.</small></div>${seg([["light","Claro","sun"],["dark","Escuro"],["","Automático"]].map(x=>x),th,"setTh","s")}</div>
+   <div class="pr"><div><b>Idioma</b><small>Defina o idioma do EcoTrack.</small></div><select class="sel"><option>Português (BR)</option></select></div>
+   <div class="pr"><div><b>Formato de dados</b><small>Escolha o padrão de data e unidades.</small></div><select class="sel" style="min-width:120px"><option>dd/mm/aaaa</option></select><select class="sel" style="min-width:120px"><option>Métrico</option></select></div>
+   ${sw("rec","Atualizações","Manter o sistema sempre atualizado.")}</div></div>
+ <div class="col">
+  <div class="card">${ct("bld","Empresa")}<div class="rw" style="cursor:default">${ti("bld","")}<div><b>Meta (Estudo de Caso)</b><small>Unidade: Datacenter SP</small></div><button class="btn" onclick="toast('Editar empresa (simulação)')">${ic("pen",16)} Editar</button></div></div>
+  <div class="card">${ct("wifi","Integrações e Dispositivos")}${it("wifi","Dispositivos IoT",DEV.filter(x=>x.on).length+" conectados")}${it("cloud","Integrações (APIs)","2 ativas")}${it("db","Banco de Dados","Conectado")}</div>
+  <div class="card">${ct("bell","Alertas e Notificações")}${sw("bolt","Alertas de alto consumo")}${sw("gear","Lembretes de manutenção dos dispositivos")}${sw("mail","Relatórios mensais por e-mail")}</div></div></div>`}
+const setTh=v=>{document.documentElement.dataset.theme=v;render()};
+
+const R={dashboard,consumo,dispositivos,relatorios,recomendacoes,configuracoes};
+const NAV=[["dashboard","home","Dashboard"],["consumo","bars","Consumo"],["dispositivos","wifi","Dispositivos IoT"],["relatorios","file","Relatórios"],["recomendacoes","leaf","Recomendações"],["configuracoes","gear","Configurações"]];
+function render(){
+ clearInterval(tm);ch.forEach(x=>x.destroy());ch=[];post=null;
+ Chart.defaults.color=cs("--mut");Chart.defaults.borderColor=cs("--bd");
+ const h=location.hash.slice(1),key=R[h]?h:"dashboard";
+ $("#nav").innerHTML=`<div class="logo">${ic("leaf",32)} EcoTrack</div>`+NAV.map(n=>`<a href="#${n[0]}" class="${n[0]==key?"on":""}">${ic(n[1],22)}${n[2]}</a>`).join("")+`<div class="emp">${ic("bld",28)}<div>Empresa atual<b>Meta (Estudo de Caso)</b></div></div>`;
+ $("#main").innerHTML=R[key]()+`<p class="ft">Protótipo acadêmico: dados ilustrativos e leituras de IoT simuladas.</p>`;
+ post&&post();
+}
+addEventListener("hashchange",()=>{render();scrollTo(0,0)});
+render();
+</script>
+</body>
+</html>
