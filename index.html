@@ -63,6 +63,19 @@ table{width:100%;border-collapse:collapse}td{padding:8px;border-bottom:1px solid
 .ft{color:var(--mut);font-size:12px}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0b1f46;color:#fff;padding:10px 16px;border-radius:8px;display:none;z-index:20}
 @media(max-width:900px){body{flex-direction:column}nav{width:auto;height:auto;flex-direction:row;overflow-x:auto;padding:8px;z-index:5}.logo,.emp{display:none}nav a{white-space:nowrap;margin:0}main{padding:16px}.g3,.g21,.g11,.g32{grid-template-columns:1fr}.g4,.g4b{grid-template-columns:1fr 1fr}.g4b .btn{grid-column:1/-1;justify-content:center}h1{font-size:24px}.ind{grid-template-columns:1fr}}
+
+.auth nav{display:none}.auth main{display:grid;place-items:center;padding:20px}
+.ac{width:100%;max-width:430px}.ac .logo{color:var(--tx);justify-content:center;margin:0 0 6px}.ac .logo svg{color:#22c55e}
+.f{display:flex;flex-direction:column;gap:6px;margin:10px 0}.f>span{font-weight:500}.f .sel{width:100%}
+.formrow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}.formrow .f{margin:0;flex:1;min-width:140px}
+.err{color:#dc2626;margin:8px 0;min-height:18px}
+.top{position:relative}.pop{position:absolute;right:0;top:54px;width:340px;max-width:92vw;z-index:30}
+.bell.nb::after{display:none}.av{overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}
+.pg{height:8px;border-radius:99px;background:var(--bd);overflow:hidden;margin-top:6px}.pg i{display:block;height:100%;background:var(--ok)}
+.bt{border:0;background:none;color:var(--pri);cursor:pointer;font:inherit;padding:4px 8px}.bt.d{color:#dc2626}
+.hide{display:none}.tw{overflow:auto}th{text-align:left;padding:8px;border-bottom:2px solid var(--bd);white-space:nowrap}
+a.btn{text-decoration:none}nav a[href="#"]{margin-top:0}
+@media print{nav,.top .tr,.btn,.seg,.flt,.noprint{display:none!important}body{background:#fff;color:#000}main{padding:0}}
 </style>
 </head>
 <body>
@@ -72,149 +85,260 @@ table{width:100%;border-collapse:collapse}td{padding:8px;border-bottom:1px solid
 <script>
 const $=s=>document.querySelector(s),cs=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),fm=n=>String(n).replace(".",",");
 const P={home:"M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10",bars:"M5 20V11M10 20V4M15 20v-9M20 20V8",wifi:"M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0M12 19.5h.01",file:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6",leaf:"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10zM2 21c0-3 1.9-5.5 6-7",gear:"M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1",bolt:"M13 2L4 14h7l-1 8 9-12h-7z",drop:"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",rec:"M4 12a8 8 0 0 1 13-6l2 2M20 4v5h-5M20 12a8 8 0 0 1-13 6l-2-2M4 20v-5h5",bell:"M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4",user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0",bld:"M4 21V5l8-2v18M12 9h8v12M7 9h2M7 13h2M7 17h2M15 13h2M15 17h2",ch:"M9 6l6 6-6 6",dn:"M12 4v16M6 14l6 6 6-6",lay:"M12 3l9 5-9 5-9-5zM3 13l9 5 9-5",coin:"M12 4c4 0 7 1 7 2.5S16 9 12 9 5 8 5 6.5 8 4 12 4zM5 6.5v5C5 13 8 14 12 14s7-1 7-2.5v-5M5 11.5v5C5 18 8 19 12 19s7-1 7-2.5v-5",cloud:"M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z",sun:"M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5",bulb:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3",temp:"M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0",plus:"M12 5v14M5 12h14",dl:"M12 4v12M7 11l5 5 5-5M5 20h14",more:"M12 5h.01M12 12h.01M12 19h.01",tr:"M3 17l6-6 4 4 8-8",chk:"M5 12l5 5 9-10",srch:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M21 21l-5-5",db:"M4 6c0-1.5 3.6-3 8-3s8 1.5 8 3-3.6 3-8 3-8-1.5-8-3zM4 6v12c0 1.5 3.6 3 8 3s8-1.5 8-3V6M4 12c0 1.5 3.6 3 8 3s8-1.5 8-3",tgt:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8",pen:"M4 20l1-4L16 5l3 3L8 19z",cam:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6",mail:"M3 6h18v12H3zM3 7l9 7 9-7",warn:"M12 3l10 18H2zM12 10v5M12 18h.01",cal:"M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"};
+Object.assign(P,{trash:"M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",out:"M9 4H5v16h4M16 8l4 4-4 4M20 12H9",upa:"M12 20V4M6 10l6-6 6 6",up:"M12 20V8M7 13l5-5 5 5M5 4h14"});
+const nf=(v,d=1)=>Number(v).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const pc=v=>v==null?"—":(v>0?"+":"")+nf(v)+"%";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const MES=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-const E=[22.6,23.1,25.0,23.2,22.8,23.9,25.6,26.8,24.4,22.9,23.0,24.1];
-const IDX={e:[83,85,91,86,84,87,93,94,90,87,89,94],a:[74,76,80,77,74,76,79,82,79,77,78,82],m:[67,69,71,70,68,69,71,72,71,70,70,73]};
-const RES={
- energia:{n:"Energia",u:"GWh",k:1,tot:"287,4 GWh",med:"23,9 GWh",dv:"5,2%",eco:"15,8 GWh",c:"#1565ff",ic:"bolt"},
- agua:{n:"Água",u:"mil m³",k:160/23.9,tot:"1,92 milhões m³",med:"160 mil m³",dv:"3,8%",eco:"76 mil m³",c:"#16a34a",ic:"drop"},
- mat:{n:"Materiais",u:"mil t",k:1.05/23.9,tot:"12,6 mil t",med:"1,05 mil t",dv:"7,1%",eco:"0,96 mil t",c:"#7c3aed",ic:"rec"}};
-let DEV=[
- {n:"Medidor de Energia – Datacenter",s:"Setor TI",id:"IOT-001",on:1,i:"bolt",cc:"b",u:"kWh",cur:26.4,mes:"1.842 kWh",dv:"5,2%",k:1,t:"Energia · Setor TI"},
- {n:"Medidor de Água – Prédio Principal",s:"Infraestrutura",id:"IOT-002",on:1,i:"drop",cc:"b",u:"m³",cur:4.2,mes:"3.120 m³",dv:"3,8%",k:.16,t:"Água · Infraestrutura"},
- {n:"Sensor de Resíduos",s:"Operações",id:"IOT-003",on:1,i:"rec",cc:"g",u:"kg",cur:38,mes:"12.400 kg",dv:"7,1%",k:1.44,t:"Materiais · Operações"},
- {n:"Sensor de Ambiente",s:"Datacenter",id:"IOT-004",on:0,i:"temp",cc:"r",u:"°C",cur:0,mes:"—",dv:"—",k:0,t:"Temperatura · Datacenter"}];
-let ch=[],post=null,tm=0,cur="energia",vw="g",sel=0,rg="h",dt="c",rtp=0,rt="s";
-const setCur=v=>{cur=v;render()},setVw=v=>{vw=v;render()},setRg=v=>{rg=v;render()},setDt=v=>{dt=v;render()},setRt=v=>{rt=v;render()};
+const MESL=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const RS={energia:{n:"Energia",u:"GWh",ic:"bolt",c:"#1565ff"},agua:{n:"Água",u:"mil m³",ic:"drop",c:"#16a34a"},mat:{n:"Materiais",u:"mil t",ic:"rec",c:"#7c3aed"}};
+const DT={energia:{n:"Medidor de Energia",ic:"bolt",cc:"b",u:"kWh",k:1},agua:{n:"Medidor de Água",ic:"drop",cc:"b",u:"m³",k:.16},mat:{n:"Sensor de Resíduos",ic:"rec",cc:"g",u:"kg",k:1.44},temp:{n:"Sensor de Ambiente",ic:"temp",cc:"r",u:"°C",k:.9}};
+const RC=[[1,"energia","bolt","","Otimizar o resfriamento dos servidores","Ajustar a temperatura e o fluxo de ar pode reduzir o consumo de energia em até 8%.",8,1],[2,"agua","drop","g","Reuso de água em sistemas de climatização","Implementar reaproveitamento pode gerar economia de até 5% no consumo de água.",5,0],[3,"mat","rec","g","Gestão de materiais e resíduos","Melhorar a separação e o descarte pode reduzir o volume de resíduos em até 10%.",10,1],[4,"energia","bulb","o","Automatização da iluminação","Sensores de presença e controle inteligente podem reduzir o consumo de energia em até 6%.",6,0],[5,"energia","sun","g","Uso de fontes renováveis","Avaliar a instalação de energia solar para reduzir custos e emissões de CO₂.",12,1]];
+const E24=[22.6,23.1,25.0,23.2,22.8,23.9,25.6,26.8,24.4,22.9,23.0,24.1],KR={energia:1,agua:160/23.9,mat:1.05/23.9},PV={energia:.948,agua:.962,mat:.929};
+const BH=[21,23,24.5,25.5,28,27,30.5,34,35,31,29,26.4];
 
+/* ===== Banco de dados local (salvo no navegador) ===== */
+const KEY="ecotrack_db_v1",SK="ecotrack_ses";
+let DB=null,SES=null;
+try{DB=JSON.parse(localStorage.getItem(KEY));SES=localStorage.getItem(SK)}catch(e){}
+if(!DB||!DB.usuarios)DB={usuarios:[],empresas:[],consumo:[],dispositivos:[],metas:[],planos:[],recs:[],seq:1,simOn:1};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}},nid=()=>DB.seq++;
+async function hash(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("eco:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return btoa(unescape(encodeURIComponent("eco:"+s)))}}
+const U=()=>DB.usuarios.find(u=>u.id==SES),EID=()=>(U()||{}).eid,EMP=()=>DB.empresas.find(e=>e.id==EID());
+const CS=()=>DB.consumo.filter(c=>c.eid==EID()),myDevs=()=>DB.dispositivos.filter(d=>d.eid==EID());
+function seedCons(eid){for(const r in KR)E24.forEach((v,i)=>{DB.consumo.push({id:nid(),eid,ano:2024,mes:i+1,rec:r,valor:+(v*KR[r]).toFixed(2),fonte:"Exemplo",org:"estimado"});DB.consumo.push({id:nid(),eid,ano:2023,mes:i+1,rec:r,valor:+(v*KR[r]/PV[r]).toFixed(2),fonte:"Exemplo",org:"estimado"})})}
+function mkDev(eid,nome,tipo,setor,on){const k=DT[tipo].k,t=tipo=="temp";const d={id:nid(),eid,nome,tipo,setor,on:on?1:0,lim:t?30:+(38*k).toFixed(1),hoje:t?BH.map(()=>+(22+Math.random()*5).toFixed(1)):BH.map(v=>+(v*k).toFixed(2)),hist:Array.from({length:30},(_,i)=>t?+(23+2*Math.sin(i/4)).toFixed(1):+((24+3*Math.sin(i/4)+(i*7%5)*.3)*k).toFixed(2))};DB.dispositivos.push(d);return d}
+function newEmp(nome,un,setor){const e={id:nid(),nome,unidade:un||"Matriz",setor:setor||"Tecnologia",tarifa:{energia:450000,agua:6000,mat:1500000},fator:.04,limite:20,al:{alto:1,manut:1,email:1}};DB.empresas.push(e);seedCons(e.id);[["Medidor de Energia – Datacenter","energia","Setor TI",1],["Medidor de Água – Prédio Principal","agua","Infraestrutura",1],["Sensor de Resíduos","mat","Operações",1],["Sensor de Ambiente","temp","Datacenter",0]].forEach(x=>mkDev(e.id,x[0],x[1],x[2],x[3]));return e}
+function newUser(nome,email,h,cargo,eid){const u={id:nid(),eid,nome,email,hash:h,cargo};DB.usuarios.push(u);return u}
+function login(u){SES=String(u.id);try{localStorage.setItem(SK,SES)}catch(e){}save();location.hash="#dashboard";render()}
+function logout(){SES=null;try{localStorage.removeItem(SK)}catch(e){}am="l";location.hash="";render()}
+const err=m=>{$("#err").textContent=m};
+
+/* ===== Cálculos ===== */
+const anos=()=>[...new Set(CS().map(c=>c.ano))].sort((a,b)=>b-a);
+const Y=()=>{const a=anos();return a.includes(yr)?yr:(a[0]||new Date().getFullYear())};
+const ser=(ano,rec)=>{const a=Array(12).fill(null);CS().filter(c=>c.ano==ano&&c.rec==rec).forEach(c=>a[c.mes-1]=c.valor);return a};
+const sum=a=>a.reduce((s,v)=>s+(v||0),0),cnt=a=>a.filter(v=>v!=null).length;
+const tot=(y,r)=>sum(ser(y,r)),avg=(y,r)=>{const s=ser(y,r);return cnt(s)?sum(s)/cnt(s):0};
+const vr=(y,r)=>{const a=ser(y,r),b=ser(y-1,r);let x=0,z=0;a.forEach((v,i)=>{if(v!=null&&b[i]!=null){x+=v;z+=b[i]}});return z>0?(x-z)/z*100:null};
+const cost=(y,r)=>tot(y,r)*EMP().tarifa[r];
+const brl=v=>v>=1e6?"R$ "+nf(v/1e6,1)+" mi":v>=1e3?"R$ "+nf(v/1e3,1)+" mil":"R$ "+nf(v,0);
+const fv=(r,t)=>nf(t,r=="agua"?0:1)+" "+RS[r].u;
+const applied=id=>DB.recs.some(r=>r.eid==EID()&&r.rid==id);
+function recCalc(only){const y=Y(),pr={energia:0,agua:0,mat:0};let rs=0,co=0;RC.filter(r=>only?applied(r[0]):1).forEach(r=>{rs+=r[6]/100*cost(y,r[1]);pr[r[1]]+=r[6];if(r[1]=="energia")co+=r[6]/100*tot(y,"energia")*1000*EMP().fator});const tc=Object.keys(RS).reduce((s,k)=>s+cost(y,k),0);return{rs,co,pct:tc?rs/tc*100:0,pr}}
+function lv(){const vs=Object.keys(RS).map(r=>vr(Y(),r)).filter(v=>v!=null),m=vs.length?sum(vs)/vs.length:0,f=RC.filter(r=>applied(r[0])).length/RC.length,s=Math.round(Math.max(0,Math.min(100,55+25*f+Math.min(20,Math.max(-10,-m*2)))));return[s>=85?"A":s>=70?"B":s>=55?"C":"D",s]}
+function dist(y){const c=Object.keys(RS).map(k=>cost(y,k)),t=sum(c);return Object.keys(RS).map((k,i)=>({k,n:RS[k].n,v:t?c[i]/t*100:0}))}
+function alertas(){const e=EMP(),a=[],y=Y();if(!e)return a;
+ if(e.al.alto)for(const r in RS){const s=ser(y,r),ix=s.map((v,i)=>v!=null?i:-1).filter(i=>i>=0);if(ix.length>2){const li=ix[ix.length-1],pv=ix.slice(0,-1).map(i=>s[i]),m=sum(pv)/pv.length,v=(s[li]-m)/m*100;if(v>e.limite)a.push({s:"r",t:`${RS[r].n}: ${MES[li]}/${y} está ${nf(v,0)}% acima da média do ano`})}}
+ myDevs().forEach(d=>{const l=d.hoje[d.hoje.length-1];if(d.on&&l>d.lim)a.push({s:"o",t:`${d.nome}: leitura acima do limite (${nf(l)} ${DT[d.tipo].u})`});if(!d.on&&e.al.manut)a.push({s:"y",t:`${d.nome} está offline. Verifique o dispositivo.`})});return a}
+
+/* ===== Componentes ===== */
+let ch=[],post=null,tm=0,cur="energia",dcur="energia",vw="g",sel=null,rg="h",dt="c",rtp=0,rt="s",cf="g",am="l",yr=null,showAdd=0,showReg=0,pop=0,bt="consumo",rf="todos";
 const ic=(n,s=22)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${P[n]}"/></svg>`;
-const ti=(n,k)=>`<div class="ti ${k}">${ic(n,26)}</div>`;
+const ti=(n,k)=>`<div class="ti ${k||""}">${ic(n,26)}</div>`;
 const dnn=t=>`<span class="dn">${ic("dn",14)}<b>${t}</b></span>`;
+const dlt=v=>v==null?`<div class="sb">sem ano anterior para comparar</div>`:`<div class="sb"><span class="${v<=0?"dn":"bad"}">${ic(v<=0?"dn":"upa",14)}<b>${nf(Math.abs(v))}%</b></span> em relação ao ano anterior</div>`;
 const kp=(n,k,l,v,s)=>`<div class="card kp">${ti(n,k)}<div><b class="kl">${l}</b><div class="kv">${v}</div>${s||""}</div></div>`;
-const head=(t,s)=>`<div class="top"><div><h1>${t}</h1><p class="sub">${s}</p></div><div class="tr"><span class="bell">${ic("bell",24)}</span><div class="av">${ic("user",24)}</div></div></div>`;
+const avatar=u=>u&&u.foto?`<img src="${u.foto}" alt="">`:ic("user",24);
+const head=(t,s)=>{const A=alertas();return `<div class="top"><div><h1>${t}</h1><p class="sub">${s}</p></div><div class="tr"><span class="bell ${A.length?"":"nb"}" onclick="pop=!pop;render()" style="cursor:pointer">${ic("bell",24)}</span><div class="av">${avatar(U())}</div></div>${pop?`<div class="card pop"><b>Alertas (${A.length})</b>${A.length?A.map(a=>`<div class="rw" style="cursor:default"><span class="${a.s=="r"?"bad":""}">●</span><div>${esc(a.t)}</div></div>`).join(""):`<p class="sub">Nenhum alerta no momento.</p>`}</div>`:""}</div>`};
 const ct=(n,t,x)=>`<div class="ct">${ic(n,20)}<h3>${t}</h3>${x||""}</div>`;
 const cv=(id,h)=>`<div class="ch"${h?` style="height:${h}px"`:""}><canvas id="${id}"></canvas></div>`;
 const seg=(a,v,fn,s)=>`<div class="seg ${s||""}">${a.map(x=>`<button class="${x[0]==v?"on":""}" onclick="${fn}('${x[0]}')">${x[2]?ic(x[2],16):""}${x[1]}</button>`).join("")}</div>`;
 const rowl=(n,k,t,s,r,h)=>`<a class="rw" href="${h||"#"}">${ti(n,k)}<div><b>${t}</b><small>${s}</small></div>${r||""}${ic("ch",18)}</a>`;
 const leg=a=>a.map(x=>`<div><i style="background:${x[0]}"></i>${x[1]}</div>`).join("");
 const dw=(id,m)=>`<div class="dw">${cv(id,170)}<div class="dc">${m}</div></div>`;
-const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2200)};
+const yrSel=()=>`<select class="sel" onchange="yr=+this.value;render()">${(anos().length?anos():[Y()]).map(a=>`<option value="${a}" ${a==Y()?"selected":""}>Jan – Dez/${a}</option>`).join("")}</select>`;
+const fld=(l,i,v,t,x)=>`<div class="f"><span>${l}</span><input class="sel" id="${i}" type="${t||"text"}" value="${esc(v)}" ${x||""}></div>`;
+const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",2600)};
 const mk=(id,cfg)=>ch.push(new Chart($("#"+id),cfg));
-const area=(id,lab,ds,u,mn,mx)=>mk(id,{type:"line",data:{labels:lab,datasets:ds.map(d=>({tension:.35,pointRadius:3.5,pointBackgroundColor:"#fff",pointBorderColor:d.borderColor,borderWidth:2,fill:ds.length==1,backgroundColor:d.borderColor+"26",...d}))},options:{maintainAspectRatio:false,plugins:{legend:{display:ds.length>1,position:"right"}},scales:{x:{grid:{display:false}},y:{min:mn,max:mx,ticks:{callback:v=>v+(u?" "+u:"")}}}}});
+const area=(id,lab,ds,u,mn,mx)=>mk(id,{type:"line",data:{labels:lab,datasets:ds.map(d=>({tension:.35,pointRadius:3.5,pointBackgroundColor:"#fff",pointBorderColor:d.borderColor,borderWidth:2,spanGaps:true,fill:ds.length==1,backgroundColor:d.borderColor+"26",...d}))},options:{maintainAspectRatio:false,plugins:{legend:{display:ds.length>1,position:"right"}},scales:{x:{grid:{display:false}},y:{min:mn,max:mx,ticks:{callback:v=>v+(u?" "+u:"")}}}}});
 const donut=(id,d)=>mk(id,{type:"doughnut",data:{datasets:[{data:d,backgroundColor:["#0a56e8","#7fb3ff","#b4bccb"],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:"66%",plugins:{tooltip:{enabled:false}}}});
-const LG=leg([["#0a56e8","Energia – 72%"],["#7fb3ff","Água – 20%"],["#b4bccb","Materiais – 8%"]]);
+const LG=y=>leg(dist(y).map((d,i)=>[["#0a56e8","#7fb3ff","#b4bccb"][i],`${d.n} – ${nf(d.v,0)}%`]));
+const idx=s=>{const m=Math.max(...s.filter(v=>v!=null),1);return s.map(v=>v==null?null:+(v/m*100).toFixed(1))};
+function dl(nome,txt,mime,bom){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([(bom?"\ufeff":"")+txt],{type:(mime||"text/csv")+";charset=utf-8"}));a.download=nome;document.body.appendChild(a);a.click();a.remove();toast("Arquivo gerado: "+nome)}
+const csv=(h,rows)=>[h,...rows].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(";")).join("\n");
 
+/* ===== Autenticação ===== */
+const setAm=v=>{am=v;render()};
+async function doLogin(){const e=$("#l_e").value.trim().toLowerCase(),s=$("#l_s").value;if(!e||!s)return err("Informe e-mail e senha.");const u=DB.usuarios.find(x=>x.email==e);if(!u||u.hash!=await hash(s))return err("E-mail ou senha incorretos.");login(u)}
+async function doReg(){const g=i=>$("#"+i).value.trim(),nome=g("r_n"),e=g("r_e").toLowerCase(),s=$("#r_s").value,cargo=$("#r_c").value,emp=g("r_m")||"Minha empresa";
+ if(!nome||!e||!s)return err("Preencha nome, e-mail e senha.");if(!/^\S+@\S+\.\S+$/.test(e))return err("E-mail inválido.");if(s.length<6)return err("A senha precisa ter pelo menos 6 caracteres.");if(DB.usuarios.some(u=>u.email==e))return err("Este e-mail já está cadastrado.");
+ login(newUser(nome,e,await hash(s),cargo,newEmp(emp).id))}
+async function demo(){let u=DB.usuarios.find(x=>x.email=="demo@ecotrack.com");if(!u)u=newUser("Lucas Henrique","demo@ecotrack.com",await hash("demo123"),"Analista de TI",newEmp("Meta (Estudo de Caso)","Datacenter SP","Tecnologia").id);login(u)}
+function auth(){return `<div class="card ac"><div class="logo">${ic("leaf",32)} EcoTrack</div><p class="sub" style="text-align:center;margin-bottom:14px">Monitoramento inteligente de recursos</p><div style="text-align:center">${seg([["l","Entrar"],["r","Criar conta"]],am,"setAm")}</div>
+ ${am=="l"?fld("E-mail","l_e","","email",'autocomplete="username"')+fld("Senha","l_s","","password",'autocomplete="current-password"')+`<div class="err" id="err"></div><button class="btn p" style="width:100%;justify-content:center" onclick="doLogin()">Entrar</button>`
+ :fld("Nome","r_n","")+fld("E-mail","r_e","","email")+fld("Senha (mínimo 6 caracteres)","r_s","","password")+`<div class="f"><span>Cargo</span><select class="sel" id="r_c"><option>Analista de TI</option><option>Gestor</option><option>Estudante</option><option>Outro</option></select></div>`+fld("Nome da empresa","r_m","")+`<div class="err" id="err"></div><button class="btn p" style="width:100%;justify-content:center" onclick="doReg()">Criar conta</button>`}
+ <p style="text-align:center"><button class="bt" onclick="demo()">Usar conta de demonstração</button></p><small>Protótipo acadêmico: os dados ficam salvos apenas neste navegador. Não use senhas reais.</small></div>`}
+
+/* ===== Registro de consumo ===== */
+function upC(ano,mes,rec,valor,fonte,org){const e=EID(),x=DB.consumo.find(c=>c.eid==e&&c.ano==ano&&c.mes==mes&&c.rec==rec);if(x){x.valor=valor;x.fonte=fonte;x.org=org}else DB.consumo.push({id:nid(),eid:e,ano,mes,rec,valor,fonte,org});save()}
+function addC(){const ano=+$("#c_a").value,mes=+$("#c_m").value,rec=$("#c_r").value,v=parseFloat($("#c_v").value.replace(",",".")),f=$("#c_f").value.trim();if(!ano||!(v>=0))return toast("Informe o ano e um valor válido.");upC(ano,mes,rec,v,f||"Informado pelo usuário","manual");yr=ano;showReg=0;toast("Consumo registrado.");render()}
+function delC(id){DB.consumo=DB.consumo.filter(c=>c.id!=id);save();render()}
+
+/* ===== Telas ===== */
 function dashboard(){
- post=()=>{area("c1",MES,[{label:"GWh",data:E,borderColor:"#1565ff"}],"GWh",20,30);donut("c2",[72,20,8])};
- const sub=t=>`<div class="sb">${dnn(t)} em relação ao ano anterior</div>`;
+ const y=Y(),all=dcur=="todos";
+ post=()=>{area("c1",MES,all?Object.keys(RS).map(r=>({label:RS[r].n,data:idx(ser(y,r)),borderColor:RS[r].c})):[{label:RS[dcur].u,data:ser(y,dcur),borderColor:RS[dcur].c}],all?"%":RS[dcur].u);donut("c2",dist(y).map(d=>d.v))};
+ const k=(r,l)=>kp(RS[r].ic,"",l,fv(r,tot(y,r)),dlt(vr(y,r))),pend=RC.filter(r=>!applied(r[0])).slice(0,3),dv=myDevs();
  return head(`Olá, bem-vindo ao <span class="bl">EcoTrack</span>!`,"Monitoramento inteligente de recursos para mais economia e sustentabilidade.")+
- `<div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: <select class="sel"><option>Todos</option><option>Energia</option><option>Água</option><option>Materiais</option></select></label></div>
- <div class="g3">${kp("bolt","","Consumo de Energia","287,4 GWh",sub("-5,2%"))}${kp("drop","","Consumo de Água","1,92 milhões m³",sub("-3,8%"))}${kp("rec","","Materiais (Resíduos)","12,6 mil toneladas",sub("-7,1%"))}</div>
- <div class="g21"><div class="card">${ct("bars","Consumo Mensal de Energia")}${cv("c1")}</div>
- <div class="card">${ct("lay","Distribuição do Consumo")}<div class="dl">${dw("c2","<small>Total</small><b>100%</b>")}<div class="lg">${LG}</div></div></div></div>
- <div class="g32"><div class="card">${ct("leaf","Recomendações de Economia")}
-  ${rowl("bolt","","Otimizar o resfriamento de servidores","Pode reduzir em até 8% o consumo de energia.","","#recomendacoes")}
-  ${rowl("drop","g","Reuso de água em sistemas de climatização","Economia estimada de 5% no consumo de água.","","#recomendacoes")}
-  ${rowl("rec","g","Aprimorar a gestão de resíduos","Pode reduzir em até 10% o volume de materiais descartados.","","#recomendacoes")}</div>
- <div class="card">${ct("wifi","Dispositivos IoT",`<span class="pill">● ${DEV.filter(x=>x.on).length} dispositivos conectados</span>`)}
-  ${DEV.filter(x=>x.on).slice(0,3).map(x=>`<a class="rw" href="#dispositivos">${ti(x.i,x.cc)}<div><b>${x.n.split(" – ")[0]}</b></div><span class="ok">● Online</span>${ic("ch",18)}</a>`).join("")}</div></div>`}
+ `<div class="flt"><label>Período: ${yrSel()}</label><label>Recurso: <select class="sel" onchange="dcur=this.value;render()">${[["energia","Energia"],["agua","Água"],["mat","Materiais"],["todos","Todos"]].map(x=>`<option value="${x[0]}" ${x[0]==dcur?"selected":""}>${x[1]}</option>`).join("")}</select></label></div>
+ <div class="g3">${k("energia","Consumo de Energia")}${k("agua","Consumo de Água")}${k("mat","Materiais (Resíduos)")}</div>
+ <div class="g21"><div class="card">${ct("bars",all?"Consumo Mensal (% do pico)":`Consumo Mensal de ${RS[dcur].n}`)}${cv("c1")}</div><div class="card">${ct("lay","Distribuição do Consumo (custo estimado)")}<div class="dl">${dw("c2","<small>Total</small><b>100%</b>")}<div class="lg">${LG(y)}</div></div></div></div>
+ <div class="g32"><div class="card">${ct("leaf","Recomendações de Economia")}${pend.length?pend.map(r=>rowl(r[2],r[3],r[4],r[5].replace(/ pode.*|\.$/,"")?r[5]:"","","#recomendacoes")).join(""):"<p class=sub>Todas as recomendações foram aplicadas.</p>"}</div>
+ <div class="card">${ct("wifi","Dispositivos IoT",`<span class="pill">● ${dv.filter(x=>x.on).length} dispositivos conectados</span>`)}${dv.slice(0,4).map(x=>`<a class="rw" href="#dispositivos" onclick="sel=${x.id}">${ti(DT[x.tipo].ic,DT[x.tipo].cc)}<div><b>${esc(x.nome.split(" – ")[0])}</b></div><span class="${x.on?"ok":"bad"}">● ${x.on?"Online":"Offline"}</span>${ic("ch",18)}</a>`).join("")||"<p class=sub>Nenhum dispositivo cadastrado.</p>"}</div></div>`}
 
 function consumo(){
- const all=cur=="todos",r=RES[all?"energia":cur],k=r.k,F=v=>fm((v*k).toFixed(1));
+ const y=Y(),all=cur=="todos",rr=all?"energia":cur,r=RS[rr],s=ser(y,rr),n=cnt(s),v=vr(y,rr),q=(a,rc)=>[0,1,2,3].map(i=>+sum(ser(a,rc).slice(i*3,i*3+3)).toFixed(1));
+ const potR=RC.filter(x=>x[1]==rr).reduce((a,x)=>a+x[6],0);
  post=()=>{
-  if(vw=="g")area("c1",MES,all?[{label:"Energia",data:IDX.e,borderColor:"#1565ff"},{label:"Água",data:IDX.a,borderColor:"#16a34a"},{label:"Materiais",data:IDX.m,borderColor:"#7c3aed"}]:[{label:r.u,data:E.map(v=>+(v*k).toFixed(2)),borderColor:r.c}],all?"%":r.u,cur=="energia"?20:all?60:undefined,cur=="energia"?30:all?100:undefined);
-  donut("c2",[72,20,8]);
-  mk("c3",{type:"bar",data:{labels:["1º Trim","2º Trim","3º Trim","4º Trim"],datasets:[{label:"2023",data:[74.2,72.8,78.6,77.5].map(v=>+(v*k).toFixed(1)),backgroundColor:"#a9c8ff",borderRadius:4},{label:"2024",data:[70.1,68.9,74.5,73.9].map(v=>+(v*k).toFixed(1)),backgroundColor:r.c,borderRadius:4}]},options:{maintainAspectRatio:false,scales:{x:{grid:{display:false}}}}})};
- const K=all?[kp("bolt","","Energia","287,4 GWh"),kp("drop","","Água","1,92 milhões m³"),kp("rec","g","Materiais","12,6 mil t"),kp("leaf","g","Economia Estimada","R$ 124.500/ano")]
-  :[kp(r.ic,"","Consumo Total",r.tot),kp("cal","","Média Mensal",r.med),kp("dn","g","Variação Anual",`<span class="dn">${ic("dn",22)}-${r.dv}</span> <small>vs. 2023</small>`),kp("leaf","g","Economia Estimada",`<span class="ok">${r.eco}</span>`)];
- const body=vw=="g"?cv("c1"):`<div style="height:230px;overflow:auto"><table>${MES.map((m,i)=>`<tr><td>${m}</td><td>${all?`${IDX.e[i]}% · ${IDX.a[i]}% · ${IDX.m[i]}%`:F(E[i])+" "+r.u}</td></tr>`).join("")}</table></div>`;
+  if(vw=="g")area("c1",MES,all?Object.keys(RS).map(k=>({label:RS[k].n,data:idx(ser(y,k)),borderColor:RS[k].c})):[{label:r.u,data:s,borderColor:r.c}],all?"%":r.u);
+  donut("c2",dist(y).map(d=>d.v));
+  mk("c3",{type:"bar",data:{labels:["1º Trim","2º Trim","3º Trim","4º Trim"],datasets:[...(anos().includes(y-1)?[{label:String(y-1),data:q(y-1,rr),backgroundColor:"#a9c8ff",borderRadius:4}]:[]),{label:String(y),data:q(y,rr),backgroundColor:r.c,borderRadius:4}]},options:{maintainAspectRatio:false,scales:{x:{grid:{display:false}}}}})};
+ const K=all?[kp("bolt","","Energia",fv("energia",tot(y,"energia"))),kp("drop","","Água",fv("agua",tot(y,"agua"))),kp("rec","g","Materiais",fv("mat",tot(y,"mat"))),kp("leaf","g","Economia Estimada",`<span class="ok">${brl(recCalc(0).rs)}/ano</span>`)]
+  :[kp(r.ic,"","Consumo Total",fv(rr,tot(y,rr))),kp("cal","","Média Mensal",fv(rr,avg(y,rr))),kp(v!=null&&v>0?"upa":"dn",v!=null&&v>0?"r":"g","Variação Anual",v==null?"—":`<span class="${v<=0?"dn":"bad"}">${nf(v)}%</span> <small>vs. ${y-1}</small>`),kp("leaf","g","Economia Estimada",`<span class="ok">${fv(rr,tot(y,rr)*potR/100)}</span>`)];
+ const recs=CS().filter(c=>c.ano==y&&(all||c.rec==rr)).sort((a,b)=>a.mes-b.mes||a.rec.localeCompare(b.rec));
+ const body=vw=="g"?cv("c1"):`<div class="tw" style="max-height:300px"><table><tr><th>Mês</th><th>Recurso</th><th>Valor</th><th>Origem</th><th>Fonte</th><th></th></tr>${recs.map(c=>`<tr><td>${MES[c.mes-1]}/${c.ano}</td><td>${RS[c.rec].n}</td><td>${nf(c.valor,2)} ${RS[c.rec].u}</td><td>${esc(c.org)}</td><td>${esc(c.fonte)}</td><td><button class="bt d" onclick="delC(${c.id})">${ic("trash",16)}</button></td></tr>`).join("")||"<tr><td colspan=6>Sem registros neste período.</td></tr>"}</table></div>`;
+ const mx=n?Math.max(...s.filter(x=>x!=null)):0,mi=s.indexOf(mx),am_=avg(y,rr);
  return head("Consumo","Acompanhe em detalhes o consumo de recursos, com análises, comparativos e histórico mensal.")+
- `<div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: ${seg([["energia","Energia","bolt"],["agua","Água","drop"],["mat","Materiais","rec"],["todos","Todos","lay"]],cur,"setCur","s")}</label></div>
+ `<div class="flt"><label>Período: ${yrSel()}</label><label>Recurso: ${seg([["energia","Energia","bolt"],["agua","Água","drop"],["mat","Materiais","rec"],["todos","Todos","lay"]],cur,"setCur","s")}</label><button class="btn p" onclick="showReg=!showReg;render()">${ic("plus",18)} Registrar consumo</button></div>
+ ${showReg?`<div class="card" style="margin-bottom:16px">${ct("pen","Registrar consumo")}<div class="formrow">${fld("Ano","c_a",y,"number")}<div class="f"><span>Mês</span><select class="sel" id="c_m">${MESL.map((m,i)=>`<option value="${i+1}">${m}</option>`).join("")}</select></div><div class="f"><span>Recurso</span><select class="sel" id="c_r">${Object.keys(RS).map(k=>`<option value="${k}" ${k==rr?"selected":""}>${RS[k].n} (${RS[k].u})</option>`).join("")}</select></div>${fld("Valor","c_v","","number",'step="any"')}${fld("Fonte (opcional)","c_f","")}<button class="btn p" onclick="addC()">Salvar</button></div><small>Se já existir registro do mesmo mês e recurso, ele é atualizado.</small></div>`:""}
  <div class="g4">${K.join("")}</div>
  <div class="g21"><div class="card">${ct("bolt",all?"Consumo Mensal (% do pico)":`Consumo Mensal de ${r.n}`,seg([["g","Gráfico","bars"],["t","Tabela","file"]],vw,"setVw","s"))}${body}</div>
- <div class="card">${ct("lay","Distribuição por Recurso (Anual)")}<div class="dl">${dw("c2",`<small>Total</small><b>${all?"100%":r.tot}</b>`)}<div class="lg">${LG}</div></div></div></div>
- <div class="g11"><div class="card">${ct("bars",`Comparativo de Consumo (${r.u})`)}${cv("c3")}</div>
- <div class="card">${ct("leaf","Principais Insights")}${rowl("dn","g",`Redução de ${r.dv} no consumo anual`,"Em relação ao ano anterior.")}${rowl("bulb","o","Pico de consumo em agosto",`${F(26.8)} ${r.u}, 12% acima da média mensal.`)}${rowl("leaf","g","Oportunidade de economia","É possível reduzir mais 8% com ações de eficiência.")}</div></div>`}
+ <div class="card">${ct("lay","Distribuição por Recurso (custo estimado)")}<div class="dl">${dw("c2","<small>Total</small><b>100%</b>")}<div class="lg">${LG(y)}</div></div></div></div>
+ <div class="g11"><div class="card">${ct("bars",`Comparativo Trimestral (${r.u})`)}${cv("c3")}</div>
+ <div class="card">${ct("leaf","Principais Insights")}${v==null?rowl("cal","","Compare períodos","Registre o mesmo mês em dois anos para ver a variação.","","#consumo"):rowl(v<=0?"dn":"upa",v<=0?"g":"r",`${v<=0?"Redução":"Aumento"} de ${nf(Math.abs(v))}% no consumo anual`,"Em relação ao ano anterior.")}${n?rowl("bulb","o",`Pico de consumo em ${MESL[mi]}`,`${nf(mx)} ${r.u}, ${nf(Math.abs((mx-am_)/am_*100),0)}% ${mx>=am_?"acima":"abaixo"} da média mensal.`):""}${rowl("leaf","g","Oportunidade de economia",`É possível reduzir até ${potR}% com as recomendações.`,"","#recomendacoes")}</div></div>`}
+const setCur=v=>{cur=v;render()},setVw=v=>{vw=v;render()};
 
+function devSel(){if(!myDevs().some(d=>d.id==sel))sel=(myDevs()[0]||{}).id}
 function dispositivos(){
- const d=DEV[sel],on=DEV.filter(x=>x.on).length,B=[21,23,24.5,25.5,28,27,30.5,34,35,31,29,26.4];
- const D={h:[["00h","02h","04h","06h","08h","10h","12h","14h","16h","18h","20h","22h"],B],"7":[["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],[24.1,25.3,26,24.8,25.9,22.7,21.8]],"30":[Array.from({length:30},(_,i)=>String(i+1)),Array.from({length:30},(_,i)=>+(24+3*Math.sin(i/4)+(i*7%5)*.3).toFixed(1))]}[rg];
- post=()=>{
-  if(!d.on||dt!="c")return;
-  area("c1",D[0],[{label:d.u,data:D[1].map(v=>+(v*d.k).toFixed(2)),borderColor:"#1565ff"}],d.u);
-  if(rg=="h")tm=setInterval(()=>{const a=ch[0].data.datasets[0].data,i=a.length-1,n=+Math.max(d.k,a[i]+(Math.random()-.5)*3*d.k).toFixed(2);a[i]=n;ch[0].update("none");$("#atual").textContent=fm(n)+" "+d.u},2000)};
- const tabs=seg([["c","Consumo","bars"],["i","Informações","file"],["h","Histórico","tr"],["g","Configurações","gear"]],dt,"setDt","s");
- let det;
- if(!d.on)det=`<p class="sub">Dispositivo offline. Verifique a conexão e a alimentação.</p>`;
- else if(dt=="c")det=`<div class="g3" style="margin-top:14px">${kp("bolt","","Consumo Atual",`<span id="atual">${fm(d.cur)} ${d.u}</span>`)}${kp("cal","","Consumo no Mês",d.mes)}${kp("dn","g","Variação",`<span class="dn">${ic("dn",20)}-${d.dv}</span>`,`<div class="sb">vs. mês anterior</div>`)}</div>
-  <div class="ct">${ic("tr",20)}<h3>Consumo em Tempo Real</h3>${seg([["h","Hoje"],["7","7 dias"],["30","30 dias"]],rg,"setRg","s")}</div>${cv("c1")}<small>Leituras simuladas (não é hardware real).</small>`;
- else if(dt=="i")det=`<div style="margin-top:14px">${[["ID",d.id],["Setor",d.s],["Tipo",d.t.split(" · ")[0]],["Conexão","Wi-Fi (simulada)"],["Unidade",d.u]].map(x=>`<div class="pr"><div>${x[0]}</div><b>${x[1]}</b></div>`).join("")}</div>`;
- else det=`<p class="sub">Disponível na versão completa do sistema.</p>`;
+ devSel();const D=myDevs(),d=D.find(x=>x.id==sel),on=D.filter(x=>x.on).length,T=d?DT[d.tipo]:null;
+ const dias=n=>Array.from({length:n},(_,i)=>{const t=new Date(Date.now()-(n-1-i)*864e5);return t.getDate()+"/"+(t.getMonth()+1)});
+ const L=d?{h:[["00h","02h","04h","06h","08h","10h","12h","14h","16h","18h","20h","agora"],d.hoje],"7":[dias(7),d.hist.slice(-7)],"30":[dias(30),d.hist]}[rg]:null;
+ post=()=>{if(!d||!d.on||dt!="c")return;area("c1",L[0],[{label:T.u,data:L[1].slice(),borderColor:"#1565ff"}],T.u)};
+ const tabs=d?seg([["c","Consumo","bars"],["i","Informações","file"],["h","Histórico","tr"],["g","Configurações","gear"]],dt,"setDt","s"):"";
+ let det="";
+ if(d){const l=d.hoje[d.hoje.length-1],a7=sum(d.hist.slice(-7))/7,p7=sum(d.hist.slice(-14,-7))/7,dv=p7?(a7-p7)/p7*100:0,tp=d.tipo=="temp";
+  if(dt=="c")det=!d.on?`<p class="sub">Dispositivo offline. Use a aba Configurações para ligá-lo.</p>`:`<div class="g3" style="margin-top:14px">${kp("bolt","","Consumo Atual",`<span id="atual">${nf(l)} ${T.u}</span>`)}${kp("cal","",tp?"Média no Mês":"Consumo no Mês",tp?nf(sum(d.hist)/30)+" "+T.u:nf(sum(d.hist),0)+" "+T.u)}${kp(dv>0?"upa":"dn",dv>0?"r":"g","Variação",`<span class="${dv>0?"bad":"dn"}">${nf(Math.abs(dv))}%</span>`,`<div class="sb">últimos 7 dias vs. 7 anteriores</div>`)}</div><div class="ct">${ic("tr",20)}<h3>Consumo em Tempo Real</h3>${seg([["h","Hoje"],["7","7 dias"],["30","30 dias"]],rg,"setRg","s")}</div>${cv("c1")}<small>Leituras geradas pelo simulador (não é hardware real). Simulação: ${DB.simOn?"ligada":"desligada"}.</small>`;
+  else if(dt=="i")det=`<div style="margin-top:14px">${[["ID","IOT-"+String(d.id).padStart(3,"0")],["Setor",d.setor],["Tipo",T.n],["Conexão","Wi-Fi (simulada)"],["Limite de alerta",nf(d.lim)+" "+T.u],["Status",d.on?"Online":"Offline"]].map(x=>`<div class="pr"><div>${x[0]}</div><b>${esc(x[1])}</b></div>`).join("")}</div>`;
+  else if(dt=="h")det=`<div class="tw" style="max-height:340px;margin-top:14px"><table><tr><th>Data</th><th>Valor</th></tr>${dias(30).map((t,i)=>[t,d.hist[i]]).reverse().map(x=>`<tr><td>${x[0]}</td><td>${nf(x[1],2)} ${T.u}</td></tr>`).join("")}</table></div>`;
+  else det=`<div style="margin-top:14px">${fld("Nome","d_n",d.nome)}${fld("Setor","d_s",d.setor)}${fld(`Limite de alerta (${T.u})`,"d_l",d.lim,"number",'step="any"')}<div class="formrow"><button class="btn p" onclick="saveDev(${d.id})">Salvar</button><button class="btn" onclick="togDev(${d.id})">${d.on?"Desligar":"Ligar"} dispositivo</button><button class="btn" onclick="delDev(${d.id})" style="color:#dc2626">${ic("trash",16)} Remover</button></div></div>`}
  return head("Dispositivos IoT","Gerencie os sensores e medidores conectados ao EcoTrack e acompanhe o consumo em tempo real.")+
- `<div class="g4b">${kp("wifi","g","Dispositivos Conectados",on)}${kp("lay","","Dispositivos Totais",DEV.length)}${kp("chk","g","Operacionais",on)}${kp("warn","r","Com Falha",DEV.length-on)}<button class="btn p" onclick="addDev()">${ic("plus",18)} Adicionar Dispositivo</button></div>
- <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("bld","Meus Dispositivos")}
-  ${DEV.map((x,i)=>`<div class="rw ${i==sel?"on":""}" onclick="sel=${i};dt='c';render()">${ti(x.i,x.cc)}<div><b>${x.n}</b><small>${x.t}</small></div><span class="${x.on?"ok":"bad"}">● ${x.on?"Online":"Offline"}</span></div>`).join("")}</div>
- <div class="card"><div class="rw" style="border:0;cursor:default">${ti(d.i,d.cc)}<div><b style="font-size:18px">${d.n}</b><small>${d.s} | ID: ${d.id}</small></div><span class="pill ${d.on?"":"bad"}">● ${d.on?"Online":"Offline"}</span></div>${tabs}${det}</div></div>`}
-function addDev(){const n=DEV.length+1;DEV.push({n:"Novo medidor (simulado) "+n,s:"Setor TI",id:"IOT-00"+n,on:1,i:"bolt",cc:"b",u:"kWh",cur:18.5,mes:"1.210 kWh",dv:"2,1%",k:.7,t:"Energia · Setor TI"});sel=n-1;dt="c";toast("Dispositivo simulado adicionado");render()}
+ `<div class="g4b">${kp("wifi","g","Dispositivos Conectados",on)}${kp("lay","","Dispositivos Totais",D.length)}${kp("chk","g","Operacionais",on)}${kp("warn","r","Com Falha",D.length-on)}<button class="btn p" onclick="showAdd=!showAdd;render()">${ic("plus",18)} Adicionar Dispositivo</button></div>
+ ${showAdd?`<div class="card" style="margin-bottom:16px">${ct("plus","Novo dispositivo (simulado)")}<div class="formrow">${fld("Nome","n_n","")}<div class="f"><span>Tipo</span><select class="sel" id="n_t">${Object.keys(DT).map(k=>`<option value="${k}">${DT[k].n}</option>`).join("")}</select></div>${fld("Setor","n_s","")}<button class="btn p" onclick="addDev()">Cadastrar</button></div></div>`:""}
+ <div class="flt"><button class="btn" onclick="DB.simOn=DB.simOn?0:1;save();render()">${DB.simOn?"⏸ Pausar":"▶ Iniciar"} simulação IoT</button><small>${DB.simOn?"As leituras mudam a cada 2 segundos.":"Simulação pausada."}</small></div>
+ <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("bld","Meus Dispositivos")}${D.map(x=>`<div class="rw ${x.id==sel?"on":""}" onclick="sel=${x.id};dt='c';render()">${ti(DT[x.tipo].ic,DT[x.tipo].cc)}<div><b>${esc(x.nome)}</b><small>${DT[x.tipo].n} · ${esc(x.setor)}</small></div><span class="${x.on?"ok":"bad"}">● ${x.on?"Online":"Offline"}</span></div>`).join("")||"<p class=sub>Nenhum dispositivo. Cadastre o primeiro.</p>"}</div>
+ <div class="card">${d?`<div class="rw" style="border:0;cursor:default">${ti(T.ic,T.cc)}<div><b style="font-size:18px">${esc(d.nome)}</b><small>${esc(d.setor)} | ID: IOT-${String(d.id).padStart(3,"0")}</small></div><span class="pill ${d.on?"":"bad"}">● ${d.on?"Online":"Offline"}</span></div>${tabs}${det}`:"<p class=sub>Selecione ou cadastre um dispositivo.</p>"}</div></div>`}
+const setRg=v=>{rg=v;render()},setDt=v=>{dt=v;render()};
+function addDev(){const n=$("#n_n").value.trim(),t=$("#n_t").value,s=$("#n_s").value.trim()||"Geral";if(!n)return toast("Dê um nome ao dispositivo.");sel=mkDev(EID(),n,t,s,1).id;save();showAdd=0;dt="c";toast("Dispositivo cadastrado.");render()}
+function saveDev(id){const d=DB.dispositivos.find(x=>x.id==id),n=$("#d_n").value.trim(),l=parseFloat($("#d_l").value);if(!n)return toast("O nome não pode ficar vazio.");d.nome=n;d.setor=$("#d_s").value.trim()||"Geral";if(l>0)d.lim=l;save();toast("Dispositivo salvo.");render()}
+function togDev(id){const d=DB.dispositivos.find(x=>x.id==id);d.on=d.on?0:1;save();render()}
+function delDev(id){if(!confirm("Remover este dispositivo?"))return;DB.dispositivos=DB.dispositivos.filter(x=>x.id!=id);save();render()}
+function liveUpd(){if(location.hash!="#dispositivos"||!ch[0]||rg!="h"||dt!="c")return;const d=DB.dispositivos.find(x=>x.id==sel);if(!d||!d.on)return;ch[0].data.datasets[0].data=d.hoje.slice();ch[0].update("none");const a=$("#atual");if(a)a.textContent=nf(d.hoje[d.hoje.length-1])+" "+DT[d.tipo].u}
+setInterval(()=>{if(!U()||!DB.simOn)return;let m=0;myDevs().filter(d=>d.on).forEach(d=>{const k=DT[d.tipo].k,l=d.hoje[d.hoje.length-1],n=d.tipo=="temp"?+Math.min(34,Math.max(18,l+(Math.random()-.5)*1.2)).toFixed(1):+Math.max(k*.3,l+(Math.random()-.5)*3*k).toFixed(2);d.hoje.shift();d.hoje.push(n);m=1});if(m){save();liveUpd()}},2000);
 
+function repRows(t,y){const rs=rf=="todos"?Object.keys(RS):[rf],c=recCalc(0),[L,S]=lv();
+ if(t==0)return{h:["Ano","Mês","Recurso","Valor","Unidade","Origem","Fonte"],r:CS().filter(x=>x.ano==y&&rs.includes(x.rec)).sort((a,b)=>a.mes-b.mes||a.rec.localeCompare(b.rec)).map(x=>[x.ano,MES[x.mes-1],RS[x.rec].n,nf(x.valor,2),RS[x.rec].u,x.org,x.fonte])};
+ if(t==1)return{h:["Indicador","Valor"],r:[["Emissão estimada de CO₂ (energia, t)",nf(tot(y,"energia")*1000*EMP().fator,0)],["Redução potencial de CO₂ (t/ano)",nf(c.co,0)],["Nível de sustentabilidade",`${L} (${S}/100)`],["Recomendações aplicadas",`${RC.filter(r=>applied(r[0])).length} de ${RC.length}`],...Object.keys(RS).map(k=>[`Variação anual de ${RS[k].n}`,pc(vr(y,k))])]};
+ if(t==2){const o=[];rs.forEach(k=>{const a=ser(y,k),b=ser(y-1,k);a.forEach((v,i)=>{if(v!=null||b[i]!=null)o.push([MES[i],RS[k].n,b[i]==null?"—":nf(b[i],2),v==null?"—":nf(v,2),v!=null&&b[i]?pc((v-b[i])/b[i]*100):"—"])})});return{h:["Mês","Recurso",String(y-1),String(y),"Variação"],r:o}}
+ return{h:["Recomendação","Recurso","Impacto","Economia estimada (R$/ano)","Status"],r:RC.map(r=>[r[4],RS[r[1]].n,r[6]+"%",nf(r[6]/100*cost(y,r[1]),0),applied(r[0])?"Aplicada":"Pendente"])}}
+const REPN=["consumo_geral","sustentabilidade","comparativo","economia"];
+function exportCsv(){const y=Y(),q=repRows(rtp,y);dl(`ecotrack_${REPN[rtp]}_${y}.csv`,csv(q.h,q.r),"text/csv",1)}
 function relatorios(){
- post=()=>area("c1",MES,[{label:"Energia",data:IDX.e,borderColor:"#1565ff"},{label:"Água",data:IDX.a,borderColor:"#16a34a"},{label:"Materiais",data:IDX.m,borderColor:"#7c3aed"}],"%",60,100);
- const T=[["bars","","Consumo Geral","Visão completa de todos os recursos"],["leaf","g","Sustentabilidade","Indicadores e impacto ambiental"],["lay","p","Comparativo","Análise entre períodos (mês, trimestre, ano)"],["file","","Economia","Redução de consumo e custo estimado"]];
- const rw=(n,k,a,b,s)=>`<div class="rw" style="cursor:default">${ti(n,k)}<div><b>${a}</b></div><b>${b}</b>${dnn(s)}</div>`;
+ const y=Y(),rs=rf=="todos"?Object.keys(RS):[rf],c=recCalc(0),q=repRows(rtp,y);
+ post=()=>area("c1",MES,Object.keys(RS).map(k=>({label:RS[k].n,data:idx(ser(y,k)),borderColor:RS[k].c})),"%");
+ const T=[["bars","","Consumo Geral","Visão completa de todos os recursos"],["leaf","g","Sustentabilidade","Indicadores e impacto ambiental"],["lay","p","Comparativo","Análise entre períodos (mês, ano)"],["file","","Economia","Redução de consumo e custo estimado"]];
+ const rw=(k)=>{const v=vr(y,k);return `<div class="rw" style="cursor:default">${ti(RS[k].ic,"")}<div><b>${RS[k].n}</b></div><b>${fv(k,tot(y,k))}</b>${v==null?"<small>—</small>":`<span class="${v<=0?"dn":"bad"}">${ic(v<=0?"dn":"upa",14)}<b>${nf(Math.abs(v))}%</b></span>`}</div>`};
+ const concl=[...Object.keys(RS).map(k=>{const v=vr(y,k);return v==null?`${RS[k].n}: sem dados do ano anterior para comparar.`:`${v<=0?"Redução":"Aumento"} de ${nf(Math.abs(v))}% no consumo de ${RS[k].n.toLowerCase()} em relação a ${y-1}.`}),`Potencial de economia estimado de ${brl(c.rs)} por ano com as recomendações.`,`Alertas ativos no momento: ${alertas().length}.`];
  return head("Relatórios","Gere relatórios de consumo, análise de desempenho e economia, prontos para exportação.")+
  `<div class="g4">${T.map((x,i)=>`<div class="card kp rt ${i==rtp?"sel":""}" onclick="rtp=${i};render()">${ti(x[0],x[1])}<div><b class="kl">${x[2]}</b><div class="sb">${x[3]}</div></div></div>`).join("")}</div>
- <div class="flt"><label>Período: <select class="sel"><option>Jan – Dez/2024</option></select></label><label>Recurso: <select class="sel" style="min-width:120px"><option>Todos</option></select></label><label>Setor: <select class="sel" style="min-width:120px"><option>Todos</option></select></label><button class="btn p" onclick="toast('Relatório “${T[rtp][2]}” gerado (simulação)')">${ic("dl",18)} Exportar Relatório</button></div>
- <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("file","Resumo do Período")}${rw("bolt","","Energia","287,4 GWh","-5,2%")}${rw("drop","","Água","1,92 milhões m³","-3,8%")}${rw("rec","g","Materiais","12,6 mil t","-7,1%")}</div>
- <div class="card">${ct("tr","Evolução do Consumo (Todos os Recursos)")}${cv("c1")}</div></div>
- <div class="g11"><div class="card">${ct("leaf","Indicadores de Sustentabilidade")}<div class="ind"><div><small>Emissão Estimada de CO₂</small><b>24,8 mil t</b>${dnn("-6,4%")}</div><div><small>Economia de Água</small><b>76 mil m³</b>${dnn("-3,8%")}</div><div><small>Redução de Resíduos</small><b>960 t</b>${dnn("-7,1%")}</div></div></div>
- <div class="card">${ct("bars","Principais Conclusões")}${["Redução de 5,2% no consumo total de energia.","Economia de 3,8% no uso de água.","Diminuição de 7,1% no volume de materiais descartados.","Tendência de queda de consumo para o próximo período."].map(t=>`<div class="rw" style="cursor:default"><span class="ck">${ic("chk",14)}</span><div>${t}</div></div>`).join("")}</div></div>`}
+ <div class="flt"><label>Período: ${yrSel()}</label><label>Recurso: <select class="sel" style="min-width:140px" onchange="rf=this.value;render()">${[["todos","Todos"],["energia","Energia"],["agua","Água"],["mat","Materiais"]].map(x=>`<option value="${x[0]}" ${x[0]==rf?"selected":""}>${x[1]}</option>`).join("")}</select></label><button class="btn p" onclick="exportCsv()">${ic("dl",18)} Exportar CSV</button><button class="btn" onclick="window.print()">${ic("file",18)} Imprimir / PDF</button></div>
+ <div class="g11" style="grid-template-columns:2fr 3fr"><div class="card">${ct("file","Resumo do Período")}${rs.map(rw).join("")}</div><div class="card">${ct("tr","Evolução do Consumo (% do pico)")}${cv("c1")}</div></div>
+ <div class="g11"><div class="card">${ct("leaf","Indicadores de Sustentabilidade")}<div class="ind"><div><small>Emissão estimada de CO₂</small><b>${nf(tot(y,"energia")*1000*EMP().fator,0)} t</b></div><div><small>Economia potencial</small><b>${brl(c.rs)}</b></div><div><small>Redução potencial de CO₂</small><b>${nf(c.co,0)} t</b></div></div></div>
+ <div class="card">${ct("bars","Principais Conclusões")}${concl.map(t=>`<div class="rw" style="cursor:default"><span class="ck">${ic("chk",14)}</span><div>${t}</div></div>`).join("")}</div></div>
+ <div class="card">${ct("file",`Dados do relatório: ${T[rtp][2]}`)}<div class="tw" style="max-height:340px"><table><tr>${q.h.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${q.r.slice(0,80).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")||`<tr><td colspan="${q.h.length}">Sem dados neste período.</td></tr>`}</table></div></div>`}
 
+const togRec=id=>{const i=DB.recs.findIndex(r=>r.eid==EID()&&r.rid==id);if(i>=0)DB.recs.splice(i,1);else DB.recs.push({id:nid(),eid:EID(),rid:id});save();render()};
+const setRt=v=>{rt=v;render()};
+function addMeta(){const t=$("#m_t").value.trim(),a=parseFloat($("#m_a").value);if(!t||!(a>0))return toast("Informe a meta e o percentual alvo.");DB.metas.push({id:nid(),eid:EID(),titulo:t,rec:$("#m_r").value,alvo:a,feito:0});save();render()}
+const stepMeta=(id,d)=>{const m=DB.metas.find(x=>x.id==id);m.feito=Math.max(0,Math.min(100,m.feito+d));save();render()},delMeta=id=>{DB.metas=DB.metas.filter(x=>x.id!=id);save();render()};
+const STP=["Pendente","Em andamento","Concluído"];
+function addPlano(){const t=$("#p_t").value.trim();if(!t)return toast("Descreva a ação.");DB.planos.push({id:nid(),eid:EID(),acao:t,resp:$("#p_r").value.trim(),prazo:$("#p_p").value,st:0});save();render()}
+const cycPlano=id=>{const p=DB.planos.find(x=>x.id==id);p.st=(p.st+1)%3;save();render()},delPlano=id=>{DB.planos=DB.planos.filter(x=>x.id!=id);save();render()};
 function recomendacoes(){
- post=()=>{if(rt=="s")mk("c1",{type:"doughnut",data:{datasets:[{data:[18.6,81.4],backgroundColor:["#16a34a",cs("--bd")],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:"68%",plugins:{tooltip:{enabled:false}}}})};
- const S=[["bolt","","Otimizar o resfriamento dos servidores","Ajustar a temperatura e o fluxo de ar pode reduzir o consumo de energia em até 8%.",1,"-8,0%"],["drop","","Reuso de água em sistemas de climatização","Implementar reaproveitamento pode gerar economia de até 5% no consumo de água.",0,"-5,0%"],["rec","g","Gestão de materiais e resíduos","Melhorar a separação e o descarte pode reduzir o volume de resíduos em até 10%.",1,"-10,0%"],["bulb","o","Automatização da iluminação","Sensores de presença e controle inteligente podem reduzir o consumo de energia em até 6%.",0,"-6,0%"],["sun","g","Uso de fontes renováveis","Avaliar a instalação de energia solar para reduzir custos e emissões de CO₂.",1,"-12,0 t/ano"]];
+ const pot=recCalc(0),[L,SC]=lv(),nAp=RC.filter(r=>applied(r[0])).length,ap=recCalc(1),metas=DB.metas.filter(m=>m.eid==EID()),pl=DB.planos.filter(p=>p.eid==EID());
+ post=()=>{if(rt=="s")mk("c1",{type:"doughnut",data:{datasets:[{data:[Math.max(pot.pct,.0001),Math.max(100-pot.pct,0)],backgroundColor:["#16a34a",cs("--bd")],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:"68%",plugins:{tooltip:{enabled:false}}}})};
  let main,side="";
- if(rt=="s"){
-  main=`<div class="card">${S.map(s=>`<div class="rw" style="cursor:default">${ti(s[0],s[1])}<div><b>${s[2]}</b><small>${s[3]}</small></div><div style="text-align:right"><span class="tag ${s[4]?"a":""}">${s[4]?"Alto":"Médio"} Impacto</span><br>${dnn(s[5].slice(1))}</div></div>`).join("")}</div>`;
-  side=`<div class="col"><div class="card">${ct("bars","Impacto das Recomendações")}<div class="dl">${dw("c1","<small>de economia total</small><b>18,6%</b>")}<div class="lg" style="min-width:150px">${[["bolt","Energia","-8,0%"],["drop","Água","-5,0%"],["rec","Materiais","-10,0%"]].map(x=>`<div style="justify-content:space-between">${ic(x[0],18)}<span style="flex:1">${x[1]}</span><b class="ok">${x[2]}</b></div>`).join("")}</div></div></div>
-  <div class="card gb">${ct("leaf","Resultado Esperado")}Com a aplicação das recomendações, a empresa pode reduzir 18,6% do consumo total, economizando R$ 124.500 por ano e evitando a emissão de 24,8 toneladas de CO₂.</div></div>`}
- else main=`<div class="card"><p class="sub">Disponível na versão completa do sistema.</p></div>`;
+ if(rt=="s"){main=`<div class="card">${RC.map(s=>`<div class="rw" style="cursor:default">${ti(s[2],s[3])}<div><b>${s[4]}</b><small>${s[5]}</small></div><div style="text-align:right"><span class="tag ${s[7]?"a":""}">${s[7]?"Alto":"Médio"} Impacto</span><br>${dnn(s[6]+"%")}<br><button class="btn" style="padding:6px 12px;margin-top:6px" onclick="togRec(${s[0]})">${applied(s[0])?"✔ Aplicada":"Aplicar"}</button></div></div>`).join("")}</div>`;
+  side=`<div class="col"><div class="card">${ct("bars","Impacto das Recomendações")}<div class="dl">${dw("c1",`<small>de economia total</small><b>${nf(pot.pct)}%</b>`)}<div class="lg" style="min-width:150px">${Object.keys(RS).map(k=>`<div style="justify-content:space-between">${ic(RS[k].ic,18)}<span style="flex:1">${RS[k].n}</span><b class="ok">-${nf(pot.pr[k])}%</b></div>`).join("")}</div></div></div><div class="card gb">${ct("leaf","Resultado Esperado")}Com a aplicação das recomendações, a empresa pode reduzir ${nf(pot.pct)}% do custo de consumo, economizando cerca de ${brl(pot.rs)} por ano e evitando a emissão de ${nf(pot.co,0)} toneladas de CO₂. Já aplicadas: ${nAp} de ${RC.length} (${brl(ap.rs)}/ano).</div></div>`}
+ else if(rt=="m")main=`<div class="card">${ct("tgt","Metas de redução")}${metas.map(m=>`<div class="rw" style="cursor:default"><div style="flex:1"><b>${esc(m.titulo)}</b><small>${RS[m.rec].n} · meta de ${nf(m.alvo,0)}% · ${m.feito}% alcançado</small><div class="pg"><i style="width:${m.feito}%"></i></div></div><button class="bt" onclick="stepMeta(${m.id},-10)">−10%</button><button class="bt" onclick="stepMeta(${m.id},10)">+10%</button><button class="bt d" onclick="delMeta(${m.id})">${ic("trash",16)}</button></div>`).join("")||"<p class=sub>Nenhuma meta ainda. Crie a primeira abaixo.</p>"}<div class="formrow" style="margin-top:12px">${fld("Meta","m_t","")}<div class="f"><span>Recurso</span><select class="sel" id="m_r">${Object.keys(RS).map(k=>`<option value="${k}">${RS[k].n}</option>`).join("")}</select></div>${fld("Redução alvo (%)","m_a","","number")}<button class="btn p" onclick="addMeta()">Adicionar</button></div></div>`;
+ else main=`<div class="card">${ct("bars","Planos de ação")}${pl.map(p=>`<div class="rw" style="cursor:default"><div style="flex:1"><b>${esc(p.acao)}</b><small>${esc(p.resp||"Sem responsável")} · prazo: ${p.prazo?p.prazo.split("-").reverse().join("/"):"—"}</small></div><button class="btn" style="padding:6px 12px" onclick="cycPlano(${p.id})">${STP[p.st]}</button><button class="bt d" onclick="delPlano(${p.id})">${ic("trash",16)}</button></div>`).join("")||"<p class=sub>Nenhum plano ainda. Crie o primeiro abaixo.</p>"}<div class="formrow" style="margin-top:12px">${fld("Ação","p_t","")}${fld("Responsável","p_r","")}${fld("Prazo","p_p","","date")}<button class="btn p" onclick="addPlano()">Adicionar</button></div></div>`;
  return head("Recomendações","Sugestões personalizadas para reduzir o consumo, economizar recursos e aumentar a sustentabilidade.")+
- `<div class="g4">${kp("leaf","g","Potencial de Economia","18,6%")}${kp("coin","","Economia Estimada","R$ 124.500/ano")}${kp("cloud","","Redução Estimada de CO₂","24,8 t/ano")}${kp("leaf","g","Nível de Sustentabilidade","A (87/100)")}</div>
- ${seg([["s",`Sugestões <span class="bd">${S.length}</span>`,"bulb"],["m","Metas","tgt"],["p","Planos de Ação","bars"]],rt,"setRt")}
- <div class="g32">${main}${side}</div>`}
+ `<div class="g4">${kp("leaf","g","Potencial de Economia",nf(pot.pct)+"%")}${kp("coin","","Economia Estimada",brl(pot.rs)+"/ano")}${kp("cloud","","Redução Estimada de CO₂",nf(pot.co,0)+" t/ano")}${kp("leaf","g","Nível de Sustentabilidade",`${L} (${SC}/100)`)}</div>
+ ${seg([["s",`Sugestões <span class="bd">${RC.length}</span>`,"bulb"],["m","Metas","tgt"],["p","Planos de Ação","bars"]],rt,"setRt")}<div class="${rt=="s"?"g32":""}">${main}${side}</div>`}
 
+/* ===== Configurações ===== */
+const setCf=v=>{cf=v;render()},setTh=v=>{document.documentElement.dataset.theme=v;render()};
+function saveConta(){const u=U(),n=$("#a_n").value.trim(),e=$("#a_e").value.trim().toLowerCase();if(!n||!/^\S+@\S+\.\S+$/.test(e))return toast("Confira nome e e-mail.");if(DB.usuarios.some(x=>x.email==e&&x.id!=u.id))return toast("Este e-mail já está em uso.");u.nome=n;u.email=e;u.cargo=$("#a_c").value;save();toast("Conta atualizada.");render()}
+async function savePwd(){const s=$("#a_s").value;if(s.length<6)return toast("A nova senha precisa ter 6 ou mais caracteres.");U().hash=await hash(s);save();toast("Senha alterada.");render()}
+function saveEmp(){const e=EMP(),g=i=>parseFloat($("#" + i).value);if(!$("#e_n").value.trim())return toast("Informe o nome da empresa.");e.nome=$("#e_n").value.trim();e.unidade=$("#e_u").value.trim();e.setor=$("#e_s").value.trim();[["energia","e_te"],["agua","e_ta"],["mat","e_tm"]].forEach(x=>{if(g(x[1])>=0)e.tarifa[x[0]]=g(x[1])});if(g("e_f")>=0)e.fator=g("e_f");save();toast("Empresa salva.");render()}
+function addUser(){const n=$("#u_n").value.trim(),e=$("#u_e").value.trim().toLowerCase(),s=$("#u_s").value;if(!n||!/^\S+@\S+\.\S+$/.test(e)||s.length<6)return toast("Preencha nome, e-mail válido e senha (6+).");if(DB.usuarios.some(u=>u.email==e))return toast("Este e-mail já está cadastrado.");hash(s).then(h=>{newUser(n,e,h,$("#u_c").value,EID());save();toast("Usuário adicionado.");render()})}
+function delUser(id){if(id==SES)return;if(!confirm("Remover este usuário?"))return;DB.usuarios=DB.usuarios.filter(u=>u.id!=id);save();render()}
+const togAl=k=>{EMP().al[k]=EMP().al[k]?0:1;save();render()};
+function saveLim(){const v=parseFloat($("#al_l").value);if(!(v>=0))return toast("Informe um percentual válido.");EMP().limite=v;save();toast("Limite salvo.");render()}
+function pickFoto(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=96;const x=c.getContext("2d"),s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,96,96);U().foto=c.toDataURL("image/jpeg",.8);save();render()};im.src=r.result};r.readAsDataURL(f)}
+function impCsv(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{let n=0;r.result.split(/\r?\n/).forEach(l=>{const p=l.split(l.includes(";")?";":",").map(x=>x.replace(/"/g,"").trim());if(p.length<4)return;const ano=+p[0],mes=+p[1],rn=p[2].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""),rec=rn.startsWith("en")?"energia":rn.startsWith("ag")?"agua":rn.startsWith("mat")?"mat":null,v=parseFloat(p[3].replace(",","."));if(ano>1999&&mes>=1&&mes<=12&&rec&&!isNaN(v)){upC(ano,mes,rec,v,p[4]||"Importado de CSV","importado");n++}});toast(n+" registros importados.");render()};r.readAsText(f)}
+const resetData=()=>{if(!confirm("Apagar TODOS os dados deste navegador e voltar ao início?"))return;try{localStorage.removeItem(KEY);localStorage.removeItem(SK)}catch(e){}DB={usuarios:[],empresas:[],consumo:[],dispositivos:[],metas:[],planos:[],recs:[],seq:1,simOn:1};SES=null;location.hash="";render()};
 function configuracoes(){
- const th=document.documentElement.dataset.theme||"",th2=v=>`document.documentElement.dataset.theme='${v}';render()`;
- const sw=(n,t,s)=>`<div class="pr">${ic(n,22)}<div>${t}${s?`<small>${s}</small>`:""}</div><label class="sw"><input type="checkbox" checked><i></i></label></div>`;
- const it=(n,t,r)=>`<div class="rw" style="cursor:default">${ti(n,"")}<div><b>${t}</b></div><span class="pill">${r}</span>${ic("ch",18)}</div>`;
- return head("Configurações","Gerencie sua conta, empresa, dispositivos, alertas e preferências do sistema.")+
- `<div class="seg"><button class="on">Geral</button>${["Empresa","Usuários","Alertas","Integrações"].map(t=>`<button onclick="toast('Disponível na versão completa')">${t}</button>`).join("")}</div>
- <div class="g11" style="align-items:start"><div class="col">
-  <div class="card">${ct("user","Informações da Conta")}<div class="acc"><div class="ctr"><div class="av">${ic("user",40)}</div><b>Lucas Henrique</b><br><small>analista.ti@empresa.com</small><br><br><button class="btn" onclick="toast('Alterar foto (simulação)')">${ic("cam",16)} Alterar Foto</button></div>
-   <div class="flds"><div class="fl"><span>Nome</span><input class="sel" value="Lucas Henrique"></div><div class="fl"><span>E-mail</span><input class="sel" value="analista.ti@empresa.com"></div><div class="fl"><span>Cargo</span><select class="sel"><option>Analista de TI</option><option>Gestor</option></select></div></div></div></div>
-  <div class="card">${ct("gear","Preferências do Sistema")}
-   <div class="pr"><div><b>Tema</b><small>Escolha o modo de exibição do sistema.</small></div>${seg([["light","Claro","sun"],["dark","Escuro"],["","Automático"]].map(x=>x),th,"setTh","s")}</div>
-   <div class="pr"><div><b>Idioma</b><small>Defina o idioma do EcoTrack.</small></div><select class="sel"><option>Português (BR)</option></select></div>
-   <div class="pr"><div><b>Formato de dados</b><small>Escolha o padrão de data e unidades.</small></div><select class="sel" style="min-width:120px"><option>dd/mm/aaaa</option></select><select class="sel" style="min-width:120px"><option>Métrico</option></select></div>
-   ${sw("rec","Atualizações","Manter o sistema sempre atualizado.")}</div></div>
- <div class="col">
-  <div class="card">${ct("bld","Empresa")}<div class="rw" style="cursor:default">${ti("bld","")}<div><b>Meta (Estudo de Caso)</b><small>Unidade: Datacenter SP</small></div><button class="btn" onclick="toast('Editar empresa (simulação)')">${ic("pen",16)} Editar</button></div></div>
-  <div class="card">${ct("wifi","Integrações e Dispositivos")}${it("wifi","Dispositivos IoT",DEV.filter(x=>x.on).length+" conectados")}${it("cloud","Integrações (APIs)","2 ativas")}${it("db","Banco de Dados","Conectado")}</div>
-  <div class="card">${ct("bell","Alertas e Notificações")}${sw("bolt","Alertas de alto consumo")}${sw("gear","Lembretes de manutenção dos dispositivos")}${sw("mail","Relatórios mensais por e-mail")}</div></div></div>`}
-const setTh=v=>{document.documentElement.dataset.theme=v;render()};
+ const u=U(),e=EMP(),th=document.documentElement.dataset.theme||"",al=alertas();
+ const sw=(n,t,k,s)=>`<div class="pr">${ic(n,22)}<div>${t}${s?`<small>${s}</small>`:""}</div><label class="sw"><input type="checkbox" ${e.al[k]?"checked":""} onchange="togAl('${k}')"><i></i></label></div>`;
+ const it=(n,t,r,h)=>`<a class="rw" href="${h||"#configuracoes"}">${ti(n,"")}<div><b>${t}</b></div><span class="pill">${r}</span>${ic("ch",18)}</a>`;
+ const cargos=["Analista de TI","Gestor","Estudante","Outro"],opt=(a,v)=>a.map(x=>`<option ${x==v?"selected":""}>${x}</option>`).join("");
+ let body;
+ if(cf=="g")body=`<div class="g11" style="align-items:start"><div class="col">
+  <div class="card">${ct("user","Informações da Conta")}<div class="acc"><div class="ctr"><div class="av">${u.foto?`<img src="${u.foto}" alt="">`:ic("user",40)}</div><b>${esc(u.nome)}</b><br><small>${esc(u.email)}</small><br><br><label class="btn">${ic("cam",16)} Alterar Foto<input type="file" accept="image/*" class="hide" onchange="pickFoto(this)"></label></div>
+  <div class="flds">${fld("Nome","a_n",u.nome)}${fld("E-mail","a_e",u.email,"email")}<div class="f"><span>Cargo</span><select class="sel" id="a_c">${opt(cargos,u.cargo)}</select></div><button class="btn p" onclick="saveConta()">Salvar alterações</button>${fld("Nova senha","a_s","","password")}<button class="btn" onclick="savePwd()">Alterar senha</button></div></div></div>
+  <div class="card">${ct("gear","Preferências do Sistema")}<div class="pr"><div><b>Tema</b><small>Escolha o modo de exibição do sistema.</small></div>${seg([["light","Claro"],["dark","Escuro"],["","Automático"]],th,"setTh","s")}</div><div class="pr"><div><b>Idioma</b><small>Português (BR) é o único idioma deste protótipo.</small></div></div></div></div>
+ <div class="col"><div class="card">${ct("bld","Empresa")}<div class="rw" style="cursor:default">${ti("bld","")}<div><b>${esc(e.nome)}</b><small>Unidade: ${esc(e.unidade)}</small></div><button class="btn" onclick="setCf('e')">${ic("pen",16)} Editar</button></div></div>
+  <div class="card">${ct("wifi","Integrações e Dispositivos")}${it("wifi","Dispositivos IoT",myDevs().filter(x=>x.on).length+" conectados","#dispositivos")}${it("cloud","Integrações (APIs)","simuladas")}${it("db","Banco de Dados","Conectado","#banco")}</div>
+  <div class="card">${ct("bell","Alertas e Notificações")}${sw("bolt","Alertas de alto consumo","alto")}${sw("gear","Lembretes de manutenção dos dispositivos","manut")}${sw("mail","Relatórios mensais por e-mail (simulado)","email")}</div></div></div>`;
+ else if(cf=="e")body=`<div class="card">${ct("bld","Dados da empresa")}<div class="formrow">${fld("Nome","e_n",e.nome)}${fld("Unidade","e_u",e.unidade)}${fld("Setor","e_s",e.setor)}</div><div class="formrow">${fld("Custo energia (R$/GWh)","e_te",e.tarifa.energia,"number")}${fld("Custo água (R$/mil m³)","e_ta",e.tarifa.agua,"number")}${fld("Custo materiais (R$/mil t)","e_tm",e.tarifa.mat,"number")}${fld("Fator de emissão (tCO₂/MWh)","e_f",e.fator,"number",'step="any"')}</div><button class="btn p" onclick="saveEmp()">Salvar empresa</button><p><small>Os custos e o fator são valores de referência editáveis, usados para estimar economia e CO₂.</small></p></div>`;
+ else if(cf=="u")body=`<div class="card">${ct("user","Usuários da empresa")}<div class="tw"><table><tr><th>Nome</th><th>E-mail</th><th>Cargo</th><th></th></tr>${DB.usuarios.filter(x=>x.eid==e.id).map(x=>`<tr><td>${esc(x.nome)}</td><td>${esc(x.email)}</td><td>${esc(x.cargo)}</td><td>${x.id==SES?"<small>você</small>":`<button class="bt d" onclick="delUser(${x.id})">${ic("trash",16)}</button>`}</td></tr>`).join("")}</table></div><h3 style="margin-top:16px">Adicionar usuário</h3><div class="formrow">${fld("Nome","u_n","")}${fld("E-mail","u_e","","email")}${fld("Senha","u_s","","password")}<div class="f"><span>Cargo</span><select class="sel" id="u_c">${opt(cargos,"Analista de TI")}</select></div><button class="btn p" onclick="addUser()">Adicionar</button></div></div>`;
+ else if(cf=="a")body=`<div class="g11" style="align-items:start"><div class="card">${ct("bell","Regras de alerta")}${sw("bolt","Alertas de alto consumo","alto")}${sw("gear","Lembretes de manutenção dos dispositivos","manut")}<div class="formrow" style="margin-top:12px">${fld("Alertar quando passar da média em (%)","al_l",e.limite,"number")}<button class="btn p" onclick="saveLim()">Salvar</button></div></div><div class="card">${ct("warn",`Alertas ativos (${al.length})`)}${al.map(a=>`<div class="rw" style="cursor:default"><span class="${a.s=="r"?"bad":""}">●</span><div>${esc(a.t)}</div></div>`).join("")||"<p class=sub>Nenhum alerta no momento.</p>"}</div></div>`;
+ else body=`<div class="card">${ct("link","Integrações e dados")}
+  <div class="pr">${ic("up",22)}<div><b>Importar consumo de planilha (CSV)</b><small>Colunas: ano;mes;recurso;valor;fonte (recurso: energia, agua ou materiais)</small></div><label class="btn">Escolher arquivo<input type="file" accept=".csv,text/csv" class="hide" onchange="impCsv(this)"></label></div>
+  <div class="pr">${ic("dl",22)}<div><b>Baixar modelo de planilha</b><small>Exemplo no formato aceito na importação.</small></div><button class="btn" onclick="dl('modelo_consumo.csv','ano;mes;recurso;valor;fonte\\n2024;1;energia;22,6;Relatório\\n2024;1;agua;151;Conta de água','text/csv',1)">Baixar</button></div>
+  <div class="pr">${ic("db",22)}<div><b>Banco de dados</b><small>Veja as tabelas e os registros salvos.</small></div><a class="btn" href="#banco">Abrir</a></div>
+  <div class="pr">${ic("file",22)}<div><b>Backup completo (JSON)</b><small>Baixa todos os dados deste navegador.</small></div><button class="btn" onclick="dl('ecotrack_backup.json',JSON.stringify(DB,null,1),'application/json')">Baixar</button></div>
+  <div class="pr">${ic("trash",22)}<div><b>Apagar tudo e recomeçar</b><small>Remove contas e dados deste navegador.</small></div><button class="btn" style="color:#dc2626" onclick="resetData()">Apagar</button></div></div>`;
+ return head("Configurações","Gerencie sua conta, empresa, dispositivos, alertas e preferências do sistema.")+seg([["g","Geral","gear"],["e","Empresa","bld"],["u","Usuários","users"],["a","Alertas","bell"],["i","Integrações","link"]],cf,"setCf")+body}
+Object.assign(P,{users:"M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M2 20a7 7 0 0 1 14 0M17 5a3 3 0 0 1 0 6M18 14a6 6 0 0 1 4 6",link:"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"});
 
-const R={dashboard,consumo,dispositivos,relatorios,recomendacoes,configuracoes};
+/* ===== Visualizador do banco ===== */
+const setBt=v=>{bt=v;render()};
+function banco(){
+ const T={usuarios:DB.usuarios.map(u=>({...u,hash:"••••••",foto:u.foto?"(imagem)":""})),empresas:DB.empresas,consumo:DB.consumo,dispositivos:DB.dispositivos,recs:DB.recs,metas:DB.metas,planos:DB.planos};
+ const rows=T[bt]||[],cols=rows.length?Object.keys(rows[0]):[],cell=v=>Array.isArray(v)?`[${v.length} valores]`:v&&typeof v=="object"?esc(JSON.stringify(v)):esc(v);
+ return head("Banco de Dados","Tabelas e registros salvos neste navegador (use para prints do relatório).")+
+ `<div class="g4">${Object.keys(T).slice(0,4).map(k=>kp("db","",k,T[k].length+" registros")).join("")}</div>${seg(Object.keys(T).map(k=>[k,k]),bt,"setBt")}
+ <div class="card"><div class="tw" style="max-height:480px"><table><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${rows.slice(0,150).map(r=>`<tr>${cols.map(c=>`<td>${cell(r[c])}</td>`).join("")}</tr>`).join("")||"<tr><td>Tabela vazia.</td></tr>"}</table></div><small>${rows.length} registro(s). A senha é guardada apenas como hash.</small></div>`}
+
+/* ===== Navegação ===== */
+const R={dashboard,consumo,dispositivos,relatorios,recomendacoes,configuracoes,banco};
 const NAV=[["dashboard","home","Dashboard"],["consumo","bars","Consumo"],["dispositivos","wifi","Dispositivos IoT"],["relatorios","file","Relatórios"],["recomendacoes","leaf","Recomendações"],["configuracoes","gear","Configurações"]];
 function render(){
  clearInterval(tm);ch.forEach(x=>x.destroy());ch=[];post=null;
  Chart.defaults.color=cs("--mut");Chart.defaults.borderColor=cs("--bd");
- const h=location.hash.slice(1),key=R[h]?h:"dashboard";
- $("#nav").innerHTML=`<div class="logo">${ic("leaf",32)} EcoTrack</div>`+NAV.map(n=>`<a href="#${n[0]}" class="${n[0]==key?"on":""}">${ic(n[1],22)}${n[2]}</a>`).join("")+`<div class="emp">${ic("bld",28)}<div>Empresa atual<b>Meta (Estudo de Caso)</b></div></div>`;
- $("#main").innerHTML=R[key]()+`<p class="ft">Protótipo acadêmico: dados ilustrativos e leituras de IoT simuladas.</p>`;
+ document.body.classList.toggle("auth",!U());
+ if(!U()){$("#nav").innerHTML="";$("#main").innerHTML=auth();return}
+ const h=location.hash.slice(1),key=R[h]?h:"dashboard",act=key=="banco"?"configuracoes":key;
+ $("#nav").innerHTML=`<div class="logo">${ic("leaf",32)} EcoTrack</div>`+NAV.map(n=>`<a href="#${n[0]}" class="${n[0]==act?"on":""}">${ic(n[1],22)}${n[2]}</a>`).join("")+`<a href="#" onclick="logout();return false">${ic("out",22)}Sair</a><div class="emp">${ic("bld",28)}<div>Empresa atual<b>${esc(EMP().nome)}</b></div></div>`;
+ $("#main").innerHTML=R[key]()+`<p class="ft">Protótipo acadêmico: dados salvos apenas neste navegador; leituras de IoT simuladas.</p>`;
  post&&post();
 }
-addEventListener("hashchange",()=>{render();scrollTo(0,0)});
+addEventListener("hashchange",()=>{pop=0;render();scrollTo(0,0)});
+addEventListener("keydown",e=>{if(e.key=="Enter"&&!U()&&e.target.tagName=="INPUT")am=="l"?doLogin():doReg()});
 render();
+
 </script>
 </body>
 </html>
